@@ -120,7 +120,7 @@ function validateForm() {
     }
     // 5. Retornar si el formulario es válido o no
     return isValid;
-    
+
     // Ejemplo de estructura:
     /*
     const userName = userNameInput.value;
@@ -171,6 +171,16 @@ function getInitials(name) {
     // 2. Tomar la primera letra de cada palabra
     // 3. Unirlas y convertirlas a mayúsculas
     // 4. Si solo hay una palabra, retornar las dos primeras letras
+    let nombres = name.split(" ");
+    let letras = [];
+
+    if (nombres.length == 1) {
+        letras.push(nombres[0].substring(0, 2));
+    } else {
+        letras = nombres.map((nombre) => nombre.substring(0, 1));
+    }
+
+    return letras.join("").toUpperCase();
 }
 
 /**

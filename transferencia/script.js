@@ -76,6 +76,7 @@ function isValidInput(value) {
 function showError(errorElement, message) {
     // TODO: Implementar función para mostrar error
     // Pista: asigna el mensaje al textContent del elemento
+    errorElement.textContent = message
 }
 
 /**

@@ -61,10 +61,10 @@ function isValidInput(value) {
     // TODO: Implementar validación
     // Pista: usa trim() para eliminar espacios al inicio y final
     // Retorna true si después de trim() el string tiene longitud > 0
-    value = value.trim()
+    value = value.trim();
 
     if (value.length > 0) {
-        return true
+        return true;
     }
 }
 
@@ -76,7 +76,7 @@ function isValidInput(value) {
 function showError(errorElement, message) {
     // TODO: Implementar función para mostrar error
     // Pista: asigna el mensaje al textContent del elemento
-    errorElement.textContent = message
+    errorElement.textContent = message;
 }
 
 /**
@@ -86,6 +86,7 @@ function showError(errorElement, message) {
 function clearError(errorElement) {
     // TODO: Implementar función para limpiar error
     // Pista: asigna un string vacío al textContent
+    errorElement.textContent = "";
 }
 
 /**

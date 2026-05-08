@@ -96,14 +96,31 @@ function clearError(errorElement) {
 function validateForm() {
     // TODO: Implementar validación completa del formulario
     // 1. Obtener los valores de los inputs usando .value
+    let name = userNameInput.value;
+    let message = userMessageInput.value;
     // 2. Crear una variable para saber si el formulario es válido (inicialmente true)
+    let isValid = true;
     // 3. Validar el campo de nombre de usuario
     //    - Si no es válido, mostrar error y cambiar la variable a false
     //    - Si es válido, limpiar el error
+    if (isValidInput(name)) {
+        showError(userNameError, "Ingresa tu nombre.");
+        isValid = false;
+    } else {
+        clearError(userNameError);
+    }
     // 4. Validar el campo de mensaje
     //    - Si no es válido, mostrar error y cambiar la variable a false
     //    - Si es válido, limpiar el error
+    if (isValidInput(message)) {
+        showError(userMessageError, "Ingresa tu mensaje.");
+        isValid = false;
+    } else {
+        clearError(userMessageError);
+    }
     // 5. Retornar si el formulario es válido o no
+    return isValid;
+    
     // Ejemplo de estructura:
     /*
     const userName = userNameInput.value;

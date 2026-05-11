@@ -210,8 +210,12 @@ function hideEmptyState() {
 function showEmptyState() {
     // TODO: Implementar función para mostrar el estado vacío
     // Pista: Remueve la clase 'hidden' del elemento emptyState
-    
+ 
+    let emptyState = document.getElementById("emptyState");
+
+    emptyState.classList.remove("hidden");
 }
+    
 
 // ============================================
 // 3. CREACIÓN DE ELEMENTOS

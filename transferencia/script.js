@@ -8,8 +8,8 @@
  *
  * Autor: Jhon Jairo Gelvez Gomez
  * Fecha: 6/5/2026
- * Autor: [Tu nombre aquí]
- * Fecha: [Fecha actual]
+ * Autor: [Jhon Sebastian Falcon Ruiz]
+ * Fecha: [11/05/2026]
  * ============================================
  */
 
@@ -198,6 +198,10 @@ function updateMessageCount() {
 function hideEmptyState() {
     // TODO: Implementar función para ocultar el estado vacío
     // Pista: Agrega la clase 'hidden' al elemento emptyState
+ 
+     let emptyState = document.getElementById("emptyState");
+
+     emptyState.classList.add("hidden");
 }
 
 /**
@@ -206,6 +210,7 @@ function hideEmptyState() {
 function showEmptyState() {
     // TODO: Implementar función para mostrar el estado vacío
     // Pista: Remueve la clase 'hidden' del elemento emptyState
+    
 }
 
 // ============================================

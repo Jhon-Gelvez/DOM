@@ -227,6 +227,29 @@ function showEmptyState() {
  * @param {string} message - Contenido del mensaje
  */
 function createMessageElement(userName, message) {
+    let nuevoMensaje = document.createElement("div");
+
+    nuevoMensaje.classList.add("message-card");
+
+    nuevoMensaje.innerHTML = `
+    <div class="message-card__header">
+        <div class="message-card__user">
+            <div class="message-card__avatar">${getInitials(userName)}</div>
+            <span class="message-card__username">${userName}</span>
+        </div>
+        <span class="message-card__timestamp">${new Date().toLocaleDateString()}</span>
+    </div>
+    <div class="message-card__content">${message}</div>
+    `;
+
+    messagesContainer.prepend(nuevoMensaje);
+
+    messageCount++;
+
+    updateMessageCounter();
+
+    hideEmptyState();
+}
     // TODO: Implementar la creación de un nuevo mensaje
     // PASO 1: Crear el contenedor principal del mensaje
     // Pista: document.createElement('div')
@@ -249,7 +272,7 @@ function createMessageElement(userName, message) {
     // PASO 4: Incrementar el contador de mensajes
     // PASO 5: Actualizar el contador visual
     // PASO 6: Ocultar el estado vacío si está visible
-}
+
 
 // ============================================
 // 4. MANEJO DE EVENTOS
@@ -273,7 +296,7 @@ function handleFormSubmit(event) {
     // PASO 6: Limpiar los errores
     // PASO 7: Opcional - Enfocar el primer campo para facilitar agregar otro mensaje
     // Pista: userNameInput.focus()
-}
+
 
 /**
  * Limpia los errores cuando el usuario empieza a escribir

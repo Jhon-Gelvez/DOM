@@ -222,6 +222,7 @@ function showEmptyState() {
 // ============================================
 
 /**
+ * Crea un nuevo elemento de mensaje en el DOM
  * @param {string} userName - Nombre del usuario
  * @param {string} message - Contenido del mensaje
  */

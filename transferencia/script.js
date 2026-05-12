@@ -190,6 +190,8 @@ function updateMessageCount() {
     // TODO: Implementar actualización del contador
     // Pista: Usa template literals para crear el texto
     // Formato: "X mensaje(s)" o "X mensajes"
+    const suffix = totalMessages === 1 ? "mensaje" : "mensajes";
+    messageCount.textContent = `${totalMessages} ${suffix}`;
 }
 
 /**

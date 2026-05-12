@@ -29,7 +29,32 @@
         <span class="btn__icon">🔍</span> Buscar
       </button>
     </section>
+<!-- BLOQUE 3: RESULTADOS Y TABLA (Basado en el bloque inferior de image_8ed6a2.png) -->
+<section class="messages-section">
+  <div class="messages-header">
+    <h2 class="messages-header__title">Información del Usuario</h2>
+    <span class="messages-header__count" id="task-count">0 Tareas</span>
+  </div>
 
+  <!-- Contenedor para mostrar info del usuario o mensaje de "no encontrado" -->
+  <div id="user-info-display" class="message-card" style="margin-bottom: var(--spacing-md);">
+    <div class="message-card__content">
+      Esperando consulta de usuario...
+    </div>
+  </div>
+
+  <!-- Tabla Dinámica -->
+  <div class="card">
+    <div class="messages-container" id="tasks-table">
+      <!-- Aquí se cargarán las tareas dinámicamente -->
+      <div class="messages-empty">
+        <div class="messages-empty__icon">📋</div>
+        <p class="messages-empty__text">No hay tareas registradas</p>
+        <p class="messages-empty__subtext">Busque un usuario para ver su listado.</p>
+      </div>
+    </div>
+  </div>
+</section>
   </div>
 
 </body>

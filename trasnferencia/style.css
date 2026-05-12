@@ -285,85 +285,6 @@ body {
 }
 
 /* ============================================
-   ANIMACIONES
-   ============================================ */
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ============================================
-   RESPONSIVE DESIGN
-   ============================================ */
-
-@media (max-width: 768px) {
-    body {
-        padding: var(--spacing-md);
-    }
-    
-    .header {
-        padding: var(--spacing-lg) var(--spacing-md);
-        margin-bottom: var(--spacing-xl);
-    }
-    
-    .header__title {
-        font-size: var(--font-size-2xl);
-    }
-    
-    .header__subtitle {
-        font-size: var(--font-size-base);
-    }
-    
-    .card {
-        padding: var(--spacing-lg);
-    }
-    
-    .messages-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-sm);
-    }
-}
-
-@media (max-width: 480px) {
-    .btn {
-        width: 100%;
-    }
-    
-    .message-card__header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-sm);
-    }
-}
-
-/* ============================================
-   UTILIDADES
-   ============================================ */
-
-.hidden {
-    display: none !important;
-}
-
-.fade-out {
-    animation: fadeOut var(--transition-base) ease-out forwards;
-}
-
-@keyframes fadeOut {
-    to {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-}
-
-/* ============================================
    SECCIÓN DE MENSAJES
    ============================================ */
 
@@ -490,4 +411,102 @@ body {
     line-height: 1.6;
     word-wrap: break-word;
 }
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.footer {
+    text-align: center;
+    padding: var(--spacing-xl);
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.footer__text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    body {
+        padding: var(--spacing-md);
+    }
+    
+    .header {
+        padding: var(--spacing-lg) var(--spacing-md);
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .header__title {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .header__subtitle {
+        font-size: var(--font-size-base);
+    }
+    
+    .card {
+        padding: var(--spacing-lg);
+    }
+    
+    .messages-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .btn {
+        width: 100%;
+    }
+    
+    .message-card__header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+}
+
+/* ============================================
+   UTILIDADES
+   ============================================ */
+
+.hidden {
+    display: none !important;
+}
+
+.fade-out {
+    animation: fadeOut var(--transition-base) ease-out forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+}
+
+
 

@@ -246,7 +246,7 @@ function createMessageElement(userName, message) {
 
     messagesContainer.prepend(nuevoMensaje);
 
-    messageCount++;
+    totalMessages++;
 
     updateMessageCounter();
 

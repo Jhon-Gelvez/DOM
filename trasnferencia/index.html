@@ -55,6 +55,34 @@
     </div>
   </div>
 </section>
+<!-- BLOQUE 2: REGISTRO DE TAREAS (Basado en el bloque central de image_8ed6a2.png) -->
+<section class="card form-section">
+  <h2 class="card__title">Registrar Nueva Tarea</h2>
+  <form id="task-form">
+    <div class="form__group">
+      <input type="text" id="task-title" class="form__input" placeholder="Título de la tarea">
+    </div>
+    <div class="form__group">
+      <textarea id="task-desc" class="form__input form__textarea" placeholder="Descripción de la tarea"></textarea>
+    </div>
+    <div class="form__group">
+      <select id="task-status" class="form__input">
+        <option value="">Seleccione Estado</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="en-progreso">En Progreso</option>
+        <option value="completada">Completada</option>
+      </select>
+    </div>
+    <!-- El botón ovalado del esquema -->
+    <div style="text-align: center;">
+      <button type="submit" class="btn btn--primary"
+        style="border-radius: var(--radius-full); padding: var(--spacing-md) var(--spacing-3xl);">
+        Guardar Tarea
+      </button>
+    </div>
+  </form>
+</section>
+
   </div>
 
 </body>

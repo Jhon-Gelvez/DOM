@@ -320,6 +320,14 @@ function handleFormSubmit(event) {
  * Limpia los errores cuando el usuario empieza a escribir
  */
 function handleInputChange() {
+    this.classList.remove("error");
+
+    let error = this.nextElementSibling;
+
+    if (error) {
+        error.textContent = "";
+    }
+
     // TODO: Implementar limpieza de errores al escribir
     // Esta función se ejecuta cuando el usuario escribe en un campo
     // Debe limpiar el error de ese campo específico

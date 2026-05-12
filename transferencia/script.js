@@ -295,7 +295,7 @@ function handleFormSubmit(event) {
     // PASO 6: Limpiar los errores
     // PASO 7: Opcional - Enfocar el primer campo para facilitar agregar otro mensaje
     // Pista: userNameInput.focus()
-}
+
 
 /**
  * Limpia los errores cuando el usuario empieza a escribir

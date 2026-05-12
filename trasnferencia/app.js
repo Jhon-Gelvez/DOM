@@ -79,9 +79,6 @@ btnSearch.addEventListener("click", async () => {
 
         currentUser = userFound;
 
-        console.log("usuario actual",currentUser);
-        
-
         showUserInfo(userFound);
 
         toggleTaskForm(false);
@@ -93,13 +90,10 @@ btnSearch.addEventListener("click", async () => {
         // ============================================
 
         const tasksResponse = await fetch(
-            `${apiTasks}?userId=${String(currentUser.id)}`,
+            `${apiUrl}/1001234567?_embed=tasks`,
         );
 
         const userTasks = await tasksResponse.json();
-
-        console.log("users tasks",userTasks);
-        
 
         // LIMPIAR TABLA ANTES DE CARGAR
         clearTasks();
@@ -128,7 +122,7 @@ btnSearch.addEventListener("click", async () => {
 
         // MOSTRAR TODAS LAS TAREAS
 
-        userTasks.forEach((task) => {
+        userTasks.tasks.forEach((task) => {
             addTaskToTable(task);
         });
     } catch (error) {

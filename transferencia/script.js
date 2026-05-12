@@ -349,6 +349,9 @@ messageForm.addEventListener("submit", handleFormSubmit);
 // TODO: Registrar eventos 'input' en los campos para limpiar errores al escribir
 // Pista: userNameInput.addEventListener('input', handleInputChange);
 // Pista: userMessageInput.addEventListener('input', handleInputChange);
+userNameInput.addEventListener("input", handleInputChange);
+
+userMessageInput.addEventListener("input", handleInputChange);
 
 // ============================================
 // 6. REFLEXIÓN Y DOCUMENTACIÓN

@@ -282,7 +282,25 @@ function createMessageElement(userName, message) {
  * Maneja el evento de envío del formulario
  * @param {Event} event - Evento del formulario
  */
+
 function handleFormSubmit(event) {
+    event.preventDefault();
+
+    if (!validateForm()) {
+        return;
+    }
+
+    let nombre = userNameInput.value;
+    let mensaje = messageInput.value;
+
+    createMessageElement(nombre, mensaje);
+
+    messageForm.reset();
+
+    clearErrors();
+
+    userNameInput.focus();
+}
     // TODO: Implementar el manejador del evento submit
     // PASO 1: Prevenir el comportamiento por defecto del formulario
     // Pista: event.preventDefault()

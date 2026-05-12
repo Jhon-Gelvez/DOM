@@ -40,17 +40,25 @@ toggleTaskForm(true);
 // ============================================
 
 btnSearch.addEventListener("click", async () => {
+
     const documentValue = userDocInput.value.trim();
 
     searchError.textContent = "";
 
     if (documentValue === "") {
-        searchError.textContent = "Debe ingresar un documento";
+
+        searchError.textContent =
+            "Debe ingresar un documento";
+
+        showErrorMessage("Debe ingresar un documento");
+
         return;
     }
 
     try {
+
         // LIMPIAR TODO AL CAMBIAR DE USUARIO
+
         clearTasks();
 
         currentUser = null;
@@ -59,18 +67,26 @@ btnSearch.addEventListener("click", async () => {
         // BUSCAR USUARIO
         // ============================================
 
-        const response = await fetch(`${apiUrl}/${documentValue}`);
+        const response =
+            await fetch(`${apiUrl}/${documentValue}`);
 
-        // SI NO EXISTE
+        // ============================================
+        // USUARIO NO EXISTE
+        // ============================================
 
         if (!response.ok) {
+
             toggleTaskForm(true);
 
             userInfoDisplay.innerHTML = `
+            
                 <div class="message-card__content">
                     ❌ Usuario no encontrado
                 </div>
+
             `;
+
+            showErrorMessage("Usuario no encontrado");
 
             return;
         }
@@ -79,6 +95,12 @@ btnSearch.addEventListener("click", async () => {
 
         currentUser = userFound;
 
+        console.log("usuario actual", currentUser);
+
+        // ============================================
+        // MOSTRAR USUARIO
+        // ============================================
+
         showUserInfo(userFound);
 
         toggleTaskForm(false);
@@ -86,7 +108,7 @@ btnSearch.addEventListener("click", async () => {
         showMessage("Usuario encontrado correctamente");
 
         // ============================================
-        // TRAER TAREAS DEL USUARIO
+        // TRAER TAREAS
         // ============================================
 
         const tasksResponse = await fetch(
@@ -98,12 +120,19 @@ btnSearch.addEventListener("click", async () => {
         // LIMPIAR TABLA ANTES DE CARGAR
         clearTasks();
 
-        // SI NO TIENE TAREAS
+        // ============================================
+        // SIN TAREAS
+        // ============================================
+
         if (userTasks.length === 0) {
+
             tasksTable.innerHTML = `
             
                 <div class="messages-empty">
-                    <div class="messages-empty__icon">📋</div>
+
+                    <div class="messages-empty__icon">
+                        📋
+                    </div>
 
                     <p class="messages-empty__text">
                         El usuario no tiene tareas
@@ -117,22 +146,34 @@ btnSearch.addEventListener("click", async () => {
             
             `;
 
+            showErrorMessage("El usuario no tiene tareas");
+
             return;
         }
 
-        // MOSTRAR TODAS LAS TAREAS
+        // ============================================
+        // MOSTRAR TAREAS
+        // ============================================
 
         userTasks.tasks.forEach((task) => {
             addTaskToTable(task);
         });
+
     } catch (error) {
+
         toggleTaskForm(true);
 
         userInfoDisplay.innerHTML = `
+        
             <div class="message-card__content">
                 ❌ Error al consultar el servidor
             </div>
+
         `;
+
+        showErrorMessage(
+            "Error al consultar el servidor"
+        );
 
         console.error(error);
     }
@@ -143,20 +184,37 @@ btnSearch.addEventListener("click", async () => {
 // ============================================
 
 taskForm.addEventListener("submit", async (event) => {
+
     event.preventDefault();
 
+    // ============================================
     // VALIDACIONES
+    // ============================================
 
     const title = taskTitle.value.trim();
-    const description = taskDesc.value.trim();
-    const status = taskStatus.value;
 
-    if (title === "" || description === "" || status === "") {
-        alert("Todos los campos son obligatorios");
+    const description =
+        taskDesc.value.trim();
+
+    const status =
+        taskStatus.value;
+
+    if (
+        title === "" ||
+        description === "" ||
+        status === ""
+    ) {
+
+        showErrorMessage(
+            "Todos los campos son obligatorios"
+        );
+
         return;
     }
 
-    // OBJETO DE LA TAREA
+    // ============================================
+    // OBJETO NUEVA TAREA
+    // ============================================
 
     const newTask = {
         userId: currentUser.id,
@@ -166,28 +224,45 @@ taskForm.addEventListener("submit", async (event) => {
     };
 
     try {
+
+        // ============================================
         // ENVÍO AL SERVIDOR
+        // ============================================
+
         const response = await fetch(apiTasks, {
+
             method: "POST",
+
             headers: {
                 "Content-Type": "application/json",
             },
+
             body: JSON.stringify(newTask),
         });
 
         const taskSaved = await response.json();
 
+        // ============================================
         // MOSTRAR EN INTERFAZ
+        // ============================================
 
         addTaskToTable(taskSaved);
 
+        // ============================================
         // LIMPIAR FORMULARIO
+        // ============================================
 
         taskForm.reset();
 
-        showMessage("Tarea registrada correctamente");
+        showMessage(
+            "Tarea registrada correctamente"
+        );
+
     } catch (error) {
-        alert("Error al registrar tarea");
+
+        showErrorMessage(
+            "Error al registrar tarea"
+        );
 
         console.error(error);
     }
@@ -198,6 +273,7 @@ taskForm.addEventListener("submit", async (event) => {
 // ============================================
 
 function showUserInfo(user) {
+
     userInfoDisplay.innerHTML = `
     
         <div class="message-card__header">
@@ -209,6 +285,7 @@ function showUserInfo(user) {
                 </div>
 
                 <div>
+
                     <div class="message-card__username">
                         ${user.name}
                     </div>
@@ -216,6 +293,7 @@ function showUserInfo(user) {
                     <div class="message-card__timestamp">
                         Usuario encontrado
                     </div>
+
                 </div>
 
             </div>
@@ -223,9 +301,13 @@ function showUserInfo(user) {
         </div>
 
         <div class="message-card__content">
+
             <strong>Documento:</strong> ${user.id}<br>
+
             <strong>Nombre:</strong> ${user.name}<br>
-            <strong>email:</strong> ${user.email}
+
+            <strong>Email:</strong> ${user.email}
+
         </div>
 
     `;
@@ -236,26 +318,34 @@ function showUserInfo(user) {
 // ============================================
 
 function addTaskToTable(task) {
+
     // ELIMINAR MENSAJE VACÍO
 
-    const emptyMessage = document.querySelector(".messages-empty");
+    const emptyMessage =
+        document.querySelector(".messages-empty");
 
     if (emptyMessage) {
         emptyMessage.remove();
     }
 
+    // ============================================
     // CREAR CONTENEDOR
+    // ============================================
 
-    const taskCard = document.createElement("div");
+    const taskCard =
+        document.createElement("div");
 
     taskCard.classList.add("message-card");
 
+    // ============================================
     // ESTADO VISUAL
+    // ============================================
 
     let statusText = "";
     let statusColor = "";
 
     switch (task.status) {
+
         case "pendiente":
             statusText = "Pendiente";
             statusColor = "#f59e0b";
@@ -277,13 +367,16 @@ function addTaskToTable(task) {
             break;
     }
 
-    // CONTENIDO
+    // ============================================
+    // CONTENIDO HTML
+    // ============================================
 
     taskCard.innerHTML = `
     
         <div class="message-card__header">
 
             <div>
+
                 <div class="message-card__username">
                     ${task.title}
                 </div>
@@ -291,6 +384,7 @@ function addTaskToTable(task) {
                 <div class="message-card__timestamp">
                     Usuario: ${currentUser.name}
                 </div>
+
             </div>
 
             <span 
@@ -314,15 +408,20 @@ function addTaskToTable(task) {
 
     `;
 
+    // ============================================
     // INSERTAR EN EL DOM
+    // ============================================
 
     tasksTable.prepend(taskCard);
 
+    // ============================================
     // ACTUALIZAR CONTADOR
+    // ============================================
 
     totalTasks++;
 
-    taskCount.textContent = `${totalTasks} Tareas`;
+    taskCount.textContent =
+        `${totalTasks} Tareas`;
 }
 
 // ============================================
@@ -330,9 +429,11 @@ function addTaskToTable(task) {
 // ============================================
 
 function toggleTaskForm(disabled) {
-    const elements = taskForm.querySelectorAll(
-        "input, textarea, select, button",
-    );
+
+    const elements =
+        taskForm.querySelectorAll(
+            "input, textarea, select, button"
+        );
 
     elements.forEach((element) => {
         element.disabled = disabled;
@@ -344,6 +445,7 @@ function toggleTaskForm(disabled) {
 // ============================================
 
 function clearTasks() {
+
     tasksTable.innerHTML = "";
 
     totalTasks = 0;
@@ -352,20 +454,25 @@ function clearTasks() {
 }
 
 // ============================================
-// MENSAJES TEMPORALES
+// MENSAJE ÉXITO
 // ============================================
 
 function showMessage(message) {
-    const alertBox = document.createElement("div");
+
+    const alertBox =
+        document.createElement("div");
 
     alertBox.classList.add("message-card");
 
-    alertBox.style.borderLeft = "4px solid #10b981";
+    alertBox.style.borderLeft =
+        "4px solid #10b981";
 
     alertBox.innerHTML = `
+    
         <div class="message-card__content">
             ✅ ${message}
         </div>
+
     `;
 
     document.body.appendChild(alertBox);
@@ -375,6 +482,43 @@ function showMessage(message) {
     alertBox.style.right = "20px";
     alertBox.style.width = "300px";
     alertBox.style.zIndex = "999";
+    alertBox.style.background = "white";
+
+    setTimeout(() => {
+        alertBox.remove();
+    }, 3000);
+}
+
+// ============================================
+// MENSAJE ERROR
+// ============================================
+
+function showErrorMessage(message) {
+
+    const alertBox =
+        document.createElement("div");
+
+    alertBox.classList.add("message-card");
+
+    alertBox.style.borderLeft =
+        "4px solid #ef4444";
+
+    alertBox.innerHTML = `
+    
+        <div class="message-card__content">
+            ❌ ${message}
+        </div>
+
+    `;
+
+    document.body.appendChild(alertBox);
+
+    alertBox.style.position = "fixed";
+    alertBox.style.top = "20px";
+    alertBox.style.right = "20px";
+    alertBox.style.width = "300px";
+    alertBox.style.zIndex = "999";
+    alertBox.style.background = "white";
 
     setTimeout(() => {
         alertBox.remove();

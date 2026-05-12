@@ -291,7 +291,7 @@ function handleFormSubmit(event) {
     }
 
     let nombre = userNameInput.value;
-    let mensaje = messageInput.value;
+    let mensaje = userNameInput.value;
 
     createMessageElement(nombre, mensaje);
 

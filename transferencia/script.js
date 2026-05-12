@@ -340,7 +340,7 @@ function handleInputChange() {
 /**
  * Aquí registramos todos los event listeners
  */
-
+messageForm.addEventListener("submit", handleFormSubmit);
 // TODO: Registrar el evento 'submit' en el formulario
 // Pista: messageForm.addEventListener('submit', handleFormSubmit);
 

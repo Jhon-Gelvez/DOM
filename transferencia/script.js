@@ -103,7 +103,7 @@ function validateForm() {
     // 3. Validar el campo de nombre de usuario
     //    - Si no es válido, mostrar error y cambiar la variable a false
     //    - Si es válido, limpiar el error
-    if (isValidInput(name)) {
+    if (!isValidInput(name)) {
         showError(userNameError, "Ingresa tu nombre.");
         isValid = false;
     } else {
@@ -112,7 +112,7 @@ function validateForm() {
     // 4. Validar el campo de mensaje
     //    - Si no es válido, mostrar error y cambiar la variable a false
     //    - Si es válido, limpiar el error
-    if (isValidInput(message)) {
+    if (!isValidInput(message)) {
         showError(userMessageError, "Ingresa tu mensaje.");
         isValid = false;
     } else {
@@ -200,10 +200,10 @@ function updateMessageCount() {
 function hideEmptyState() {
     // TODO: Implementar función para ocultar el estado vacío
     // Pista: Agrega la clase 'hidden' al elemento emptyState
- 
-     let emptyState = document.getElementById("emptyState");
 
-     emptyState.classList.add("hidden");
+    let emptyState = document.getElementById("emptyState");
+
+    emptyState.classList.add("hidden");
 }
 
 /**
@@ -212,12 +212,11 @@ function hideEmptyState() {
 function showEmptyState() {
     // TODO: Implementar función para mostrar el estado vacío
     // Pista: Remueve la clase 'hidden' del elemento emptyState
- 
+
     let emptyState = document.getElementById("emptyState");
 
     emptyState.classList.remove("hidden");
 }
-    
 
 // ============================================
 // 3. CREACIÓN DE ELEMENTOS
@@ -252,13 +251,13 @@ function createMessageElement(userName, message) {
 
     hideEmptyState();
 }
-    // TODO: Implementar la creación de un nuevo mensaje
-    // PASO 1: Crear el contenedor principal del mensaje
-    // Pista: document.createElement('div')
-    // Asignar la clase 'message-card'
-    // PASO 2: Crear la estructura HTML del mensaje
-    // Puedes usar innerHTML con la siguiente estructura:
-    /*
+// TODO: Implementar la creación de un nuevo mensaje
+// PASO 1: Crear el contenedor principal del mensaje
+// Pista: document.createElement('div')
+// Asignar la clase 'message-card'
+// PASO 2: Crear la estructura HTML del mensaje
+// Puedes usar innerHTML con la siguiente estructura:
+/*
     <div class="message-card__header">
         <div class="message-card__user">
             <div class="message-card__avatar">[INICIALES]</div>
@@ -268,13 +267,12 @@ function createMessageElement(userName, message) {
     </div>
     <div class="message-card__content">[MENSAJE]</div>
     */
-    // PASO 3: Insertar el nuevo elemento en el contenedor de mensajes
-    // Pista: messagesContainer.appendChild(nuevoElemento)
-    // O usar insertBefore para agregarlo al principio
-    // PASO 4: Incrementar el contador de mensajes
-    // PASO 5: Actualizar el contador visual
-    // PASO 6: Ocultar el estado vacío si está visible
-
+// PASO 3: Insertar el nuevo elemento en el contenedor de mensajes
+// Pista: messagesContainer.appendChild(nuevoElemento)
+// O usar insertBefore para agregarlo al principio
+// PASO 4: Incrementar el contador de mensajes
+// PASO 5: Actualizar el contador visual
+// PASO 6: Ocultar el estado vacío si está visible
 
 // ============================================
 // 4. MANEJO DE EVENTOS
@@ -303,20 +301,19 @@ function handleFormSubmit(event) {
 
     userNameInput.focus();
 }
-    // TODO: Implementar el manejador del evento submit
-    // PASO 1: Prevenir el comportamiento por defecto del formulario
-    // Pista: event.preventDefault()
-    // PASO 2: Validar el formulario
-    // Si no es válido, detener la ejecución (return)
-    // PASO 3: Obtener los valores de los campos
-    // PASO 4: Crear el nuevo elemento de mensaje
-    // Llamar a createMessageElement con los valores obtenidos
-    // PASO 5: Limpiar el formulario
-    // Pista: messageForm.reset()
-    // PASO 6: Limpiar los errores
-    // PASO 7: Opcional - Enfocar el primer campo para facilitar agregar otro mensaje
-    // Pista: userNameInput.focus()
-
+// TODO: Implementar el manejador del evento submit
+// PASO 1: Prevenir el comportamiento por defecto del formulario
+// Pista: event.preventDefault()
+// PASO 2: Validar el formulario
+// Si no es válido, detener la ejecución (return)
+// PASO 3: Obtener los valores de los campos
+// PASO 4: Crear el nuevo elemento de mensaje
+// Llamar a createMessageElement con los valores obtenidos
+// PASO 5: Limpiar el formulario
+// Pista: messageForm.reset()
+// PASO 6: Limpiar los errores
+// PASO 7: Opcional - Enfocar el primer campo para facilitar agregar otro mensaje
+// Pista: userNameInput.focus()
 
 /**
  * Limpia los errores cuando el usuario empieza a escribir

@@ -19,6 +19,7 @@ const taskDesc = document.getElementById("task-desc");
 const taskStatus = document.getElementById("task-status");
 
 const tasksTable = document.getElementById("tasks-table");
+const taskCount = document.getElementById("task-count"); 
 
 // ============================================
 // VARIABLES GLOBALES
@@ -214,6 +215,37 @@ const showMessage = (message) => {
         alertBox.remove();
     }, 3000);
 };
+
+// ==========================================
+// MENSAJE ERROR
+// ==========================================
+
+function showErrorMessage(message) {
+  const alertBox = document.createElement("div");
+
+  alertBox.classList.add("message-card");
+
+  alertBox.style.borderLeft = "4px solid #ef4444";
+
+  alertBox.innerHTML = `
+    <div class="message-card__content">
+      X ${message}
+    </div>
+  `;
+
+  document.body.appendChild(alertBox);
+
+  alertBox.style.position = "fixed";
+  alertBox.style.top = "20px";
+  alertBox.style.right = "20px";
+  alertBox.style.width = "300px";
+  alertBox.style.zIndex = "999";
+  alertBox.style.background = "white";
+
+  setTimeout(() => {
+    alertBox.remove();
+  }, 3000);
+}
 
 // ============================================
 // EVENTO BUSCAR USUARIO

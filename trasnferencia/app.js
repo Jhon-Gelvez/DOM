@@ -32,7 +32,9 @@ let totalTasks = 0;
 // ============================================
 
 const toggleTaskForm = (disabled) => {
-    const elements = taskForm.querySelectorAll("input, textarea, select, button");
+    const elements = taskForm.querySelectorAll(
+        "input, textarea, select, button",
+    );
 
     elements.forEach((element) => {
         element.disabled = disabled;
@@ -49,8 +51,7 @@ toggleTaskForm(true);
 // MOSTRAR INFORMACIÓN DEL USUARIO
 // ============================================
 
-function showUserInfo(user) {
-
+const showUserInfo = (user) => {
     userInfoDisplay.innerHTML = `
     
         <div class="message-card__header">
@@ -89,7 +90,6 @@ function showUserInfo(user) {
 
     `;
 }
-
 
 // ============================================
 // AGREGAR TAREA A LA TABLA
@@ -183,8 +183,37 @@ const addTaskToTable = (task) => {
     totalTasks++;
 
     taskCount.textContent = `${totalTasks} Tareas`;
-}
+};
 
+// ============================================
+// MENSAJES TEMPORALES
+// ============================================
+
+const showMessage = (message) => {
+    const alertBox = document.createElement("div");
+
+    alertBox.classList.add("message-card");
+
+    alertBox.style.borderLeft = "4px solid #10b981";
+
+    alertBox.innerHTML = `
+        <div class="message-card__content">
+            ✅ ${message}
+        </div>
+    `;
+
+    document.body.appendChild(alertBox);
+
+    alertBox.style.position = "fixed";
+    alertBox.style.top = "20px";
+    alertBox.style.right = "20px";
+    alertBox.style.width = "300px";
+    alertBox.style.zIndex = "999";
+
+    setTimeout(() => {
+        alertBox.remove();
+    }, 3000);
+};
 
 // ============================================
 // EVENTO BUSCAR USUARIO
@@ -244,7 +273,9 @@ btnSearch.addEventListener("click", async () => {
         // TRAER TAREAS
         // ============================================
 
-        const tasksResponse = await fetch(`${apiUrl}/${currentUser.id}?_embed=tasks`);
+        const tasksResponse = await fetch(
+            `${apiUrl}/${currentUser.id}?_embed=tasks`,
+        );
 
         const userTasks = await tasksResponse.json();
 

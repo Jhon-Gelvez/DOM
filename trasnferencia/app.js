@@ -46,6 +46,51 @@ const toggleTaskForm = (disabled) => {
 toggleTaskForm(true);
 
 // ============================================
+// MOSTRAR INFORMACIÓN DEL USUARIO
+// ============================================
+
+function showUserInfo(user) {
+
+    userInfoDisplay.innerHTML = `
+    
+        <div class="message-card__header">
+        
+            <div class="message-card__user">
+            
+                <div class="message-card__avatar">
+                    ${user.name.charAt(0)}
+                </div>
+
+                <div>
+
+                    <div class="message-card__username">
+                        ${user.name}
+                    </div>
+
+                    <div class="message-card__timestamp">
+                        Usuario encontrado
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="message-card__content">
+
+            <strong>Documento:</strong> ${user.id}<br>
+
+            <strong>Nombre:</strong> ${user.name}<br>
+
+            <strong>Email:</strong> ${user.email}
+
+        </div>
+
+    `;
+}
+
+// ============================================
 // EVENTO BUSCAR USUARIO
 // ============================================
 
@@ -155,6 +200,61 @@ btnSearch.addEventListener("click", async () => {
         `;
 
         showErrorMessage("Error al consultar el servidor");
+
+        console.error(error);
+    }
+});
+
+// ============================================
+// EVENTO REGISTRAR TAREA
+// ============================================
+
+taskForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    // VALIDACIONES
+
+    const title = taskTitle.value.trim();
+    const description = taskDesc.value.trim();
+    const status = taskStatus.value;
+
+    if (title === "" || description === "" || status === "") {
+        alert("Todos los campos son obligatorios");
+        return;
+    }
+
+    // OBJETO DE LA TAREA
+
+    const newTask = {
+        userId: currentUser.id,
+        title: title,
+        description: description,
+        status: status,
+    };
+
+    try {
+        // ENVÍO AL SERVIDOR
+        const response = await fetch(apiTasks, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newTask),
+        });
+
+        const taskSaved = await response.json();
+
+        // MOSTRAR EN INTERFAZ
+
+        addTaskToTable(taskSaved);
+
+        // LIMPIAR FORMULARIO
+
+        taskForm.reset();
+
+        showMessage("Tarea registrada correctamente");
+    } catch (error) {
+        alert("Error al registrar tarea");
 
         console.error(error);
     }

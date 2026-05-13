@@ -1,12 +1,11 @@
-// TODO feedbak no encontrado
-
-
 // ============================================
 // VARIABLES Y SELECTORES DEL DOM
 // ============================================
 
+// const apiUrl = "http://localhost:3044/users";
+// const apiTasks = "http://10.5.225.175:3044/tasks";
 const apiUrl = "http://localhost:3044/users";
-const apiTasks = "http://10.5.225.175:3044/tasks";
+const apiTasks = "http://localhost:3044/tasks";
 
 const userDocInput = document.getElementById("user-doc");
 const btnSearch = document.getElementById("btn-search");
@@ -112,7 +111,7 @@ btnSearch.addEventListener("click", async () => {
         // ============================================
 
         const tasksResponse = await fetch(
-            `${apiUrl}/1001234567?_embed=tasks`,
+            `${apiUrl}/${currentUser.id}?_embed=tasks`,
         );
 
         const userTasks = await tasksResponse.json();

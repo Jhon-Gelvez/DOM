@@ -2,7 +2,27 @@
 // IMPORTS
 // ============================================
 
-import { apiUrl, apiTasks, btnSearch, userDocInput, searchError, userInfoDisplay, taskForm, taskTitle, taskDesc, taskStatus, toggleTaskForm, clearTasks, tasksTable, showUserInfo, addTaskToTable, showMessage, showErrorMessage, getCurrentUser, setCurrentUser,  } from "./src/index.js";
+import {
+    apiUrl,
+    apiTasks,
+    btnSearch,
+    userDocInput,
+    searchError,
+    userInfoDisplay,
+    taskForm,
+    taskTitle,
+    taskDesc,
+    taskStatus,
+    toggleTaskForm,
+    clearTasks,
+    tasksTable,
+    showUserInfo,
+    addTaskToTable,
+    showMessage,
+    showErrorMessage,
+    getCurrentUser,
+    setCurrentUser,
+} from "./src/index.js";
 
 // ============================================
 // DESHABILITAR FORMULARIO AL INICIO
@@ -52,7 +72,9 @@ btnSearch.addEventListener("click", async () => {
         toggleTaskForm(false);
         showMessage("Usuario encontrado correctamente");
 
-        const tasksResponse = await fetch(`${apiUrl}/${getCurrentUser().id}?_embed=tasks`);
+        const tasksResponse = await fetch(
+            `${apiUrl}/${getCurrentUser().id}?_embed=tasks`,
+        );
 
         const userTasks = await tasksResponse.json();
         const tasks = userTasks.tasks || [];
@@ -134,6 +156,34 @@ taskForm.addEventListener("submit", async (event) => {
         showMessage("Tarea registrada correctamente");
     } catch (error) {
         showErrorMessage("Error al registrar tarea");
+        console.error(error);
+    }
+});
+
+// ============================================
+// EVENTO EDITAR TAREA
+// ============================================
+
+addEventListener("click", async (events) => {
+    event.preventDefault();
+
+    // traer las tareas del usuario
+    let currentUser = getCurrentUser();
+
+    try {
+        const response = await fetch(apiTasks, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bodyTask),
+        });
+
+        const taskEdit = await response.json();
+
+        showMessage("Tarea actualizada correctamente");
+    } catch (error) {
+        showErrorMessage("Error al actualizar la tarea");
         console.error(error);
     }
 });

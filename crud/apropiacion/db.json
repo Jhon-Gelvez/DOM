@@ -1,43 +1,29 @@
 {
   "tasks": [
     {
-      "title": "hola",
-      "description": "oal",
-      "status": "pendiente",
-      "completed": false,
-      "id": "gaAI-1L-q98"
+      "title": "desayuno ",
+      "id": "QpvlZvpegSM"
     },
     {
-      "title": "queso",
-      "description": "comprar queso",
-      "status": "completada",
-      "completed": true,
-      "id": "HTCaa311zZk"
+      "title": "almuerzo",
+      "id": "eZRUHokzwso"
     },
     {
-      "title": "boton",
-      "description": "crear un boton",
-      "status": "en-progreso",
-      "completed": false,
-      "id": "Iphia2JC0DY"
+      "title": "comida",
+      "id": "_srS8QqOd-0"
     },
     {
-      "title": "asdfghjk",
-      "description": "fdghjk",
-      "status": "completada",
-      "id": "d32dcSb1O_Q"
+      "title": "running",
+      "id": "HSxtlG0LbK4"
     },
     {
-      "title": "Veniam voluptates p",
-      "description": "Culpa sit aperiam f",
-      "status": "pendiente",
-      "id": "kaRaDeYgnBs"
+      "title": "push-up",
+      "id": "1SjYkbH5Wsc"
     },
     {
-      "title": "Veritatis aliquam sa",
-      "description": "Ut sit sunt ullamco",
-      "status": "pendiente",
-      "id": "zs9OFO8vUM0"
+      "title": "pull-up",
+      "id": "0D2eqK4q0Yk"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

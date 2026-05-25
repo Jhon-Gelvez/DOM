@@ -1,0 +1,30 @@
+Parte 1: Comprendiendo antes de programar
+Métodos HTTP:
+
+Crear: POST
+
+Listar: GET
+
+Actualizar: PUT o PATCH
+
+Eliminar: DELETE
+
+Información requerida: El ID de la tarea específica en la URL para identificarla, y el nuevo texto en el cuerpo de la petición (JSON) solo para actualizar.
+
+Momento de actualización del DOM: Después de que el servidor responde con éxito confirmando que la operación se realizó de forma correcta.
+
+Parte 2: 
+Pregunta 2 (Listar): Se transforman dentro de la función showTasks(), al iterar el arreglo de datos con forEach() y usar document.createElement("li") e innerHTML.
+
+Pregunta 3 (Crear): Primero se envía la solicitud al servidor usando fetch(), y una vez confirmada la respuesta, se actualiza el DOM llamando a showTasks().
+
+Pregunta 4 (Eliminar): Porque el ID es el identificador único de cada tarea. Sin él, el servidor no sabría cuál registro específico debe borrar de la base de datos.
+
+Pregunta 5 (Actualizar): Modificar el DOM solo cambia lo que el usuario ve en la pantalla en ese instante (es temporal). Modificar el servidor cambia el dato real en la base de datos, haciendo que el cambio sea permanente.
+
+Reflexión Final
+Operación más sencilla: GET (Listar), porque solo requiere pedir los datos y mostrarlos de forma secuencial sin enviar estructuras complejas en el cuerpo del mensaje.
+
+Operación más compleja: PATCH / PUT (Actualizar), debido a que requiere dos fases independientes: cargar el texto actual de la tarea en el formulario asignando un estado global de edición (editingId), y cambiar el comportamiento del botón principal para alternar entre creación y modificación.
+
+Mayor dificultad: En la manipulación del DOM, de forma específica al gestionar la delegación de eventos en elementos dinámicos que se crean y destruyen constantemente en el árbol HTML.

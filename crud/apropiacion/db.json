@@ -1,0 +1,29 @@
+{
+  "tasks": [
+    {
+      "title": "desayuno ",
+      "id": "QpvlZvpegSM"
+    },
+    {
+      "title": "almuerzo",
+      "id": "eZRUHokzwso"
+    },
+    {
+      "title": "comida",
+      "id": "_srS8QqOd-0"
+    },
+    {
+      "title": "running",
+      "id": "HSxtlG0LbK4"
+    },
+    {
+      "title": "push-up",
+      "id": "1SjYkbH5Wsc"
+    },
+    {
+      "title": "pull-up",
+      "id": "0D2eqK4q0Yk"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

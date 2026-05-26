@@ -1,0 +1,33 @@
+Parte 1: Comprendiendo antes de programar
+
+• Crear una tarea: POST
+• Listar tareas: GET
+• Actualizar una tarea: PUT
+• Eliminar una tarea: DELETE
+
+¿Qué información necesitarían enviar al servidor para actualizar o eliminar una
+tarea?   
+El ID de la tarea específica, y el nuevo texto en el cuerpo de la petición para actualizar.
+
+¿En qué momento debe actualizarse el DOM? Después de que el servidor responde con éxito confirmando que la operación se realizó de forma correcta.
+
+Parte 2: Implementación Guiada
+
+¿En qué momento se transforman los datos JSON en elementos HTML? 
+Se transforman dentro de la función showTasks(), al iterar el arreglo de datos con forEach() y usar document.createElement("li") e innerHTML.
+
+¿Qué ocurre primero: se actualiza el DOM o se envía la solicitud al servidor?
+Primero se envía la solicitud al servidor usando fetch(), y una vez confirmada la respuesta, se actualiza el DOM.
+
+¿Por qué es importante el id en esta operación?
+Porque el ID es el identificador único de cada tarea. Sin él, el servidor no sabría cuál registro específico debe borrar de la base de datos.
+
+¿Qué diferencia existe entre modificar un dato en el DOM y modificarlo en el servidor?
+Modificar el DOM solo cambia lo que el usuario ve en la pantalla en ese instante, es temporal. Modificar el servidor cambia el dato real en la base de datos, haciendo que el cambio sea permanente.
+
+Reflexión Final
+¿Qué operación les resultó más sencilla? GET, no requiere enviar datos.
+
+¿Cuál fue la más compleja y por qué? PATCH / PUT, debido a que requiere dos fases independientes: recuperar la informacion de la tarea actual, y cambiarlo por la nueva informacion de la tarea.
+
+¿En qué parte del ciclo sintieron mayor dificultad: en la comunicación con la API o en la manipulación del DOM? En la manipulación del DOM, tomar informacion de los elementos y generar o cambiar elementos dependiendo de las acciones del usuario.

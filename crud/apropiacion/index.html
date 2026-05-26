@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>grupo 2 - apropiacion</title>
+</head>
+
+<body>
+
+    <main class="todo" id="todoApp">
+        <header class="todo__header">
+            <h1 class="todo__title" id="todoTitle">Gestor de Tareas</h1>
+        </header>
+
+        <form class="todo__form" id="todoForm" onsubmit="event.preventDefault();">
+            <div class="todo__form-row">
+
+                <input type="text" class="todo__input" id="todoInput" placeholder="Agregar nueva tarea..." required>
+                <button type="submit" class="todo__button todo__button--create" id="addTaskBtn">
+                    Crear
+                </button>
+            </div>
+            <button type="button" class="todo__button todo__button--update" id="getTasksBtn">
+                Obtener Tareas
+            </button>
+        </form>
+
+        <ul class="todo__list" id="todoList">
+
+            <span>No hay tareas aun...</span>
+            <span>Crea algunas tareas</span>
+
+        </ul>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

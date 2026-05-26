@@ -1,4 +1,36 @@
 // ============================================
+// CONSTANTES DE API
+// ============================================
+
+export const apiUrl = "http://10.5.225.105:3044/users";
+export const apiTasks = "http://10.5.225.105:3044/tasks";
+
+// ============================================
+// VARIABLES GLOBALES
+// ============================================
+
+let currentUser = null;
+let totalTasks = 0;
+
+export const getCurrentUser = () => currentUser;
+export const setCurrentUser = (user) => {
+    currentUser = user;
+};
+
+export const getTotalTasks = () => totalTasks;
+export const setTotalTasks = (count) => {
+    totalTasks = count;
+};
+
+export const incrementTotalTasks = () => {
+    totalTasks++;
+};
+
+export const resetTasks = () => {
+    totalTasks = 0;
+};
+
+// ============================================
 // SELECTORES DEL DOM
 // ============================================
 

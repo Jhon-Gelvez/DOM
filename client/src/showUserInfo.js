@@ -1,4 +1,4 @@
-import { userInfoDisplay } from "./selectors.js";
+import { userInfoDisplay } from "./config.js";
 
 // ============================================
 // MOSTRAR INFORMACIÓN DEL USUARIO

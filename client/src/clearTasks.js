@@ -1,5 +1,4 @@
-import { tasksTable, taskCount } from "./selectors.js";
-import { resetTasks } from "./globals.js";
+import { tasksTable, taskCount, resetTasks } from "./config.js";
 
 // ============================================
 // LIMPIAR TABLA

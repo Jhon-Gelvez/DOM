@@ -1,5 +1,4 @@
-import { tasksTable, taskCount } from "./selectors.js";
-import { getCurrentUser, incrementTotalTasks, getTotalTasks } from "./globals.js";
+import { tasksTable, taskCount, getCurrentUser, incrementTotalTasks, getTotalTasks } from "./config.js";
 
 // ============================================
 // AGREGAR TAREA A LA TABLA

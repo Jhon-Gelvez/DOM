@@ -2,8 +2,10 @@
 // CONSTANTES DE API
 // ============================================
 
-export const apiUrl = "http://10.5.225.105:3044/users";
-export const apiTasks = "http://10.5.225.105:3044/tasks";
+// export const apiUrl = "http://10.5.225.105:3044/users";
+// export const apiTasks = "http://10.5.225.105:3044/tasks";
+export const apiUrl = "http://localhost:3044/users";
+export const apiTasks = "http://localhost:3044/tasks";
 
 // ============================================
 // VARIABLES GLOBALES
@@ -29,6 +31,13 @@ export const incrementTotalTasks = () => {
 export const resetTasks = () => {
     totalTasks = 0;
 };
+
+let editingTaskId = null;
+export const getEditingTaskId = () => editingTaskId;
+export const setEditingTaskId = (id) => {
+    editingTaskId = id;
+};
+
 
 // ============================================
 // SELECTORES DEL DOM

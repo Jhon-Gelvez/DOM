@@ -1,10 +1,4 @@
-// ============================================
-// IMPORTS
-// ============================================
-
 import {
-    apiUrl,
-    apiTasks,
     btnSearch,
     userDocInput,
     searchError,
@@ -13,22 +7,22 @@ import {
     taskTitle,
     taskDesc,
     taskStatus,
-    toggleTaskForm,
-    clearTasks,
     tasksTable,
-    showUserInfo,
-    addTaskToTable,
-    showMessage,
-    showErrorMessage,
     getCurrentUser,
     setCurrentUser,
     getEditingTaskId,
     setEditingTaskId,
+    toggleTaskForm,
+    clearTasks,
+    showUserInfo,
+    addTaskToTable,
+    showMessage,
+    showErrorMessage,
+    getUserByDocument,
+    getUserTasks,
+    createTask,
+    updateTask,
 } from "./src/index.js";
-
-// ============================================
-// DESHABILITAR FORMULARIO AL INICIO
-// ============================================
 
 toggleTaskForm(true);
 
@@ -52,99 +46,42 @@ btnSearch.addEventListener("click", async () => {
         setCurrentUser(null);
         userInfoDisplay.innerHTML = "";
 
-        const response = await fetch(`${apiUrl}/${documentValue}`);
-
-        if (!response.ok) {
-            toggleTaskForm(true);
-
-            let errorText = "Error al buscar usuario";
-            if (response.status === 404) {
-                errorText = "Usuario no encontrado";
-            } else if (response.status === 500) {
-                errorText = "Error interno del servidor";
-            } else if (response.status === 400) {
-                errorText = "Petición incorrecta";
-            } else if (response.status === 403) {
-                errorText = "Acceso denegado";
-            } else if (response.status === 401) {
-                errorText = "No autorizado";
-            }
-
-            const errorMsg = `${errorText} (Código: ${response.status})`;
-
-            userInfoDisplay.innerHTML = `
-                <div class="message-card__content">
-                    ❌ ${errorMsg}
-                </div>
-            `;
-
-            showErrorMessage(errorMsg);
-            return;
-        }
-
-        const userFound = await response.json();
+        const userFound = await getUserByDocument(documentValue);
         setCurrentUser(userFound);
 
         showUserInfo(userFound);
         toggleTaskForm(false);
         showMessage("Usuario encontrado correctamente");
 
-        const tasksResponse = await fetch(`${apiUrl}/${getCurrentUser().id}?_embed=tasks`);
+        let userId = getCurrentUser().id
 
-        if (!tasksResponse.ok) {
-            let errorText = "Error al obtener las tareas";
-            if (tasksResponse.status === 500) {
-                errorText = "Error interno del servidor al obtener tareas";
-            }
-            showErrorMessage(`${errorText} (Código: ${tasksResponse.status})`);
-            return;
-        }
-
-        const userTasks = await tasksResponse.json();
-        const tasks = userTasks.tasks || [];
-
+        const tasks = await getUserTasks(userId);
         clearTasks();
 
         if (!tasks.length) {
             tasksTable.innerHTML = `
                 <div class="messages-empty">
-                    <div class="messages-empty__icon">
-                        📋
-                    </div>
-
-                    <p class="messages-empty__text">
-                        El usuario no tiene tareas
-                    </p>
-
-                    <p class="messages-empty__subtext">
-                        Registre una nueva tarea.
-                    </p>
+                    <div class="messages-empty__icon">📋</div>
+                    <p class="messages-empty__text">El usuario no tiene tareas</p>
+                    <p class="messages-empty__subtext">Registre una nueva tarea.</p>
                 </div>
             `;
             return;
         }
 
-        tasks.forEach((task) => {
-            addTaskToTable(task);
-        });
+        tasks.forEach(addTaskToTable);
     } catch (error) {
         toggleTaskForm(true);
-
-        const errorMsg = "Error de red: No se pudo establecer conexión con el servidor";
-
         userInfoDisplay.innerHTML = `
-            <div class="message-card__content">
-                ❌ ${errorMsg}
-            </div>
+            <div class="message-card__content">❌ ${error.message}</div>
         `;
-
-        showErrorMessage(errorMsg);
+        showErrorMessage(error.message);
         console.error(error);
     }
 });
 
 // ============================================
-// EVENTO REGISTRAR TAREA
+// EVENTO REGISTRAR / ACTUALIZAR TAREA
 // ============================================
 
 taskForm.addEventListener("submit", async (event) => {
@@ -160,47 +97,21 @@ taskForm.addEventListener("submit", async (event) => {
         return;
     }
 
-    if (editingId) {
-        try {
-            const response = await fetch(`${apiTasks}/${editingId}`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ title, description, status }),
-            });
-
-            if (!response.ok) {
-                let errorText = "Error al actualizar la tarea";
-                if (response.status === 404) {
-                    errorText = "Tarea no encontrada";
-                } else if (response.status === 500) {
-                    errorText = "Error interno del servidor";
-                }
-                showErrorMessage(`${errorText} (Código: ${response.status})`);
-                return;
-            }
-
-            const taskEdit = await response.json();
+    try {
+        if (editingId) {
+            const taskEdit = await updateTask(editingId, { title, description, status });
 
             const card = document.getElementById(taskEdit.id);
             if (card) {
-                let statusText = "";
-                switch (taskEdit.status) {
-                    case "pendiente":
-                        statusText = "Pendiente";
-                        break;
-                    case "en-progreso":
-                        statusText = "En Progreso";
-                        break;
-                    case "completada":
-                        statusText = "Completada";
-                        break;
-                    default:
-                        statusText = "Sin estado";
-                        break;
-                }
+                const statusMap = {
+                    "pendiente": "Pendiente",
+                    "en-progreso": "En Progreso",
+                    "completada": "Completada",
+                };
+                const statusText = statusMap[taskEdit.status];
 
-                card.querySelector(".message-card__title").textContent = `${taskEdit.title}`;
-                card.querySelector(".message-card__content").textContent = taskEdit.description || "Sin descripción";
+                card.querySelector(".message-card__title").textContent = taskEdit.title;
+                card.querySelector(".message-card__content").textContent = taskEdit.description;
 
                 const badge = card.querySelector(".task-badge");
                 badge.className = `task-badge task-badge--${taskEdit.status}`;
@@ -209,49 +120,23 @@ taskForm.addEventListener("submit", async (event) => {
 
             setEditingTaskId(null);
             taskForm.reset();
-            const submitBtn = taskForm.querySelector('button[type="submit"]');
-            submitBtn.textContent = "Guardar Tarea";
-
+            taskForm.querySelector('button[type="submit"]').textContent = "Guardar Tarea";
             showMessage("Tarea actualizada correctamente");
-        } catch (error) {
-            showErrorMessage("Error de red: No se pudo establecer conexión con el servidor");
-            console.error(error);
-        }
-    } else {
-        const newTask = {
-            userId: getCurrentUser().id,
-            title,
-            description,
-            status,
-        };
-
-        try {
-            const response = await fetch(apiTasks, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(newTask),
+        } else {
+            const taskSaved = await createTask({
+                userId: getCurrentUser().id,
+                title,
+                description,
+                status,
             });
-
-            if (!response.ok) {
-                let errorText = "Error al registrar la tarea";
-                if (response.status === 400) {
-                    errorText = "Datos de tarea inválidos";
-                } else if (response.status === 500) {
-                    errorText = "Error interno del servidor";
-                }
-                showErrorMessage(`${errorText} (Código: ${response.status})`);
-                return;
-            }
-
-            const taskSaved = await response.json();
 
             addTaskToTable(taskSaved);
             taskForm.reset();
             showMessage("Tarea registrada correctamente");
-        } catch (error) {
-            showErrorMessage("Error de red: No se pudo establecer conexión con el servidor");
-            console.error(error);
         }
+    } catch (error) {
+        showErrorMessage(error.message);
+        console.error(error);
     }
 });
 

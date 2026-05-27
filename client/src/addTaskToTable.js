@@ -13,29 +13,27 @@ export const addTaskToTable = (task) => {
 
     const taskCard = document.createElement("div");
     taskCard.classList.add("message-card");
+    if (task.id) {
+        taskCard.id = `${task.id}`;
+    }
 
     let statusText = "";
-    let statusColor = "";
 
     switch (task.status) {
         case "pendiente":
             statusText = "Pendiente";
-            statusColor = "#f59e0b";
             break;
 
         case "en-progreso":
             statusText = "En Progreso";
-            statusColor = "#3b82f6";
             break;
 
         case "completada":
             statusText = "Completada";
-            statusColor = "#10b981";
             break;
 
         default:
             statusText = "Sin estado";
-            statusColor = "#6b7280";
             break;
     }
 
@@ -45,33 +43,35 @@ export const addTaskToTable = (task) => {
     
         <div class="message-card__header">
 
-            <div>
-                <div class="message-card__username">
-                    ${task.title}
+            <div class="message-card__user">
+                <div class="message-card__avatar">
+                    ${currentUser.name.charAt(0).toUpperCase()}
                 </div>
 
-                <div class="message-card__timestamp">
-                    Usuario: ${currentUser.name}
+                <div>
+                    <div class="message-card__username">
+                        ${currentUser.name}
+                    </div>
+                    
+                    <div class="message-card__title">
+                        ${task.title}
+                    </div>
                 </div>
             </div>
 
-            <span 
-                style="
-                    background:${statusColor};
-                    color:white;
-                    padding:6px 12px;
-                    border-radius:20px;
-                    font-size:12px;
-                    font-weight:bold;
-                "
-            >
+            <span class="task-badge task-badge--${task.status}">
                 ${statusText}
             </span>
 
         </div>
-
-        <div class="message-card__content">
-            ${task.description || "Sin descripción"}
+        
+        <div class="message-card__body">
+            <div class="message-card__content">
+                ${task.description || "Sin descripción"}
+            </div>
+            <button type="button" class="btn btn--secondary btnUpdate" data-id="${task.id}">
+                Actualizar
+            </button>
         </div>
     `;
 
@@ -80,3 +80,4 @@ export const addTaskToTable = (task) => {
     incrementTotalTasks();
     taskCount.textContent = `${getTotalTasks()} Tareas`;
 };
+

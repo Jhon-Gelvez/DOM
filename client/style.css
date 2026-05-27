@@ -8,13 +8,13 @@
     --color-primary-dark: #4338ca;
     --color-primary-light: #6366f1;
     --color-primary-lighter: #eef2ff;
-    
+
     /* Colores de estado */
     --color-success: #10b981;
     --color-error: #ef4444;
     --color-warning: #f59e0b;
     --color-info: #3b82f6;
-    
+
     /* Escala de grises */
     --color-gray-50: #f9fafb;
     --color-gray-100: #f3f4f6;
@@ -26,64 +26,64 @@
     --color-gray-700: #374151;
     --color-gray-800: #1f2937;
     --color-gray-900: #111827;
-    
+
     /* Colores de fondo */
     --color-background: #ffffff;
     --color-background-secondary: var(--color-gray-50);
     --color-surface: #ffffff;
-    
+
     /* Colores de texto */
     --color-text-primary: var(--color-gray-900);
     --color-text-secondary: var(--color-gray-600);
     --color-text-tertiary: var(--color-gray-400);
-    
+
     /* Tipografía */
-    --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-    --font-family-mono: 'Courier New', Courier, monospace;
-    
+    --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+    --font-family-mono: "Courier New", Courier, monospace;
+
     /* Tamaños de fuente */
-    --font-size-xs: 0.75rem;    /* 12px */
-    --font-size-sm: 0.875rem;   /* 14px */
-    --font-size-base: 1rem;     /* 16px */
-    --font-size-lg: 1.125rem;   /* 18px */
-    --font-size-xl: 1.25rem;    /* 20px */
-    --font-size-2xl: 1.5rem;    /* 24px */
-    --font-size-3xl: 1.875rem;  /* 30px */
-    --font-size-4xl: 2.25rem;   /* 36px */
-    
+    --font-size-xs: 0.75rem; /* 12px */
+    --font-size-sm: 0.875rem; /* 14px */
+    --font-size-base: 1rem; /* 16px */
+    --font-size-lg: 1.125rem; /* 18px */
+    --font-size-xl: 1.25rem; /* 20px */
+    --font-size-2xl: 1.5rem; /* 24px */
+    --font-size-3xl: 1.875rem; /* 30px */
+    --font-size-4xl: 2.25rem; /* 36px */
+
     /* Pesos de fuente */
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
-    
+
     /* Espaciado */
-    --spacing-xs: 0.25rem;   /* 4px */
-    --spacing-sm: 0.5rem;    /* 8px */
-    --spacing-md: 1rem;      /* 16px */
-    --spacing-lg: 1.5rem;    /* 24px */
-    --spacing-xl: 2rem;      /* 32px */
-    --spacing-2xl: 3rem;     /* 48px */
-    --spacing-3xl: 4rem;     /* 64px */
-    
+    --spacing-xs: 0.25rem; /* 4px */
+    --spacing-sm: 0.5rem; /* 8px */
+    --spacing-md: 1rem; /* 16px */
+    --spacing-lg: 1.5rem; /* 24px */
+    --spacing-xl: 2rem; /* 32px */
+    --spacing-2xl: 3rem; /* 48px */
+    --spacing-3xl: 4rem; /* 64px */
+
     /* Border radius */
-    --radius-sm: 0.375rem;   /* 6px */
-    --radius-md: 0.5rem;     /* 8px */
-    --radius-lg: 0.75rem;    /* 12px */
-    --radius-xl: 1rem;       /* 16px */
+    --radius-sm: 0.375rem; /* 6px */
+    --radius-md: 0.5rem; /* 8px */
+    --radius-lg: 0.75rem; /* 12px */
+    --radius-xl: 1rem; /* 16px */
     --radius-full: 9999px;
-    
+
     /* Sombras */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    
+
     /* Transiciones */
     --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-    
+
     /* Z-index */
     --z-index-dropdown: 1000;
     --z-index-modal: 1050;
@@ -94,7 +94,9 @@
    RESET Y ESTILOS BASE
    ============================================ */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -399,10 +401,17 @@ body {
     color: var(--color-text-primary);
 }
 
-.message-card__timestamp {
-    font-size: var(--font-size-xs);
-    color: var(--color-text-tertiary);
-    font-weight: var(--font-weight-medium);
+.message-card__title {
+    font-size: var(--font-size-base);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+}
+
+.message-card__body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
 }
 
 .message-card__content {
@@ -410,6 +419,7 @@ body {
     color: var(--color-text-secondary);
     line-height: 1.6;
     word-wrap: break-word;
+    flex: 1;
 }
 
 /* ============================================
@@ -452,24 +462,24 @@ body {
     body {
         padding: var(--spacing-md);
     }
-    
+
     .header {
         padding: var(--spacing-lg) var(--spacing-md);
         margin-bottom: var(--spacing-xl);
     }
-    
+
     .header__title {
         font-size: var(--font-size-2xl);
     }
-    
+
     .header__subtitle {
         font-size: var(--font-size-base);
     }
-    
+
     .card {
         padding: var(--spacing-lg);
     }
-    
+
     .messages-header {
         flex-direction: column;
         align-items: flex-start;
@@ -481,11 +491,22 @@ body {
     .btn {
         width: 100%;
     }
-    
+
     .message-card__header {
         flex-direction: column;
         align-items: flex-start;
         gap: var(--spacing-sm);
+    }
+
+    .message-card__body {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+    }
+
+    .btnUpdate {
+        width: 100%;
+        text-align: center;
     }
 }
 
@@ -508,5 +529,48 @@ body {
     }
 }
 
+/* ============================================
+   BADGES DE ESTADO DE TAREA
+   ============================================ */
 
+.task-badge {
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+}
 
+.task-badge--pendiente {
+    background-color: #f59e0b;
+}
+
+.task-badge--en-progreso {
+    background-color: #3b82f6;
+}
+
+.task-badge--completada {
+    background-color: #10b981;
+}
+
+.task-badge--sin-estado {
+    background-color: #6b7280;
+}
+
+/* ============================================
+   UTILIDADES Y SELECTORES ESPECÍFICOS
+   ============================================ */
+
+.text-center {
+    text-align: center;
+}
+
+.btn--oval {
+    border-radius: var(--radius-full);
+    padding: var(--spacing-md) var(--spacing-3xl);
+}
+
+#user-info-display {
+    margin-bottom: var(--spacing-md);
+}

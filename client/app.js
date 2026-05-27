@@ -1,12 +1,28 @@
-// ============================================
-// IMPORTS
-// ============================================
-
-import { apiUrl, apiTasks, btnSearch, userDocInput, searchError, userInfoDisplay, taskForm, taskTitle, taskDesc, taskStatus, toggleTaskForm, clearTasks, tasksTable, showUserInfo, addTaskToTable, showMessage, showErrorMessage, getCurrentUser, setCurrentUser,  } from "./src/index.js";
-
-// ============================================
-// DESHABILITAR FORMULARIO AL INICIO
-// ============================================
+import {
+    btnSearch,
+    userDocInput,
+    searchError,
+    userInfoDisplay,
+    taskForm,
+    taskTitle,
+    taskDesc,
+    taskStatus,
+    tasksTable,
+    getCurrentUser,
+    setCurrentUser,
+    getEditingTaskId,
+    setEditingTaskId,
+    toggleTaskForm,
+    clearTasks,
+    showUserInfo,
+    addTaskToTable,
+    showMessage,
+    showErrorMessage,
+    getUserByDocument,
+    getUserTasks,
+    createTask,
+    updateTask,
+} from "./src/index.js";
 
 toggleTaskForm(true);
 
@@ -30,73 +46,42 @@ btnSearch.addEventListener("click", async () => {
         setCurrentUser(null);
         userInfoDisplay.innerHTML = "";
 
-        const response = await fetch(`${apiUrl}/${documentValue}`);
-
-        if (!response.ok) {
-            toggleTaskForm(true);
-
-            userInfoDisplay.innerHTML = `
-                <div class="message-card__content">
-                    ❌ Usuario no encontrado
-                </div>
-            `;
-
-            showErrorMessage("Usuario no encontrado");
-            return;
-        }
-
-        const userFound = await response.json();
+        const userFound = await getUserByDocument(documentValue);
         setCurrentUser(userFound);
 
         showUserInfo(userFound);
         toggleTaskForm(false);
         showMessage("Usuario encontrado correctamente");
 
-        const tasksResponse = await fetch(`${apiUrl}/${getCurrentUser().id}?_embed=tasks`);
+        let userId = getCurrentUser().id
 
-        const userTasks = await tasksResponse.json();
-        const tasks = userTasks.tasks || [];
-
+        const tasks = await getUserTasks(userId);
         clearTasks();
 
         if (!tasks.length) {
             tasksTable.innerHTML = `
                 <div class="messages-empty">
-                    <div class="messages-empty__icon">
-                        📋
-                    </div>
-
-                    <p class="messages-empty__text">
-                        El usuario no tiene tareas
-                    </p>
-
-                    <p class="messages-empty__subtext">
-                        Registre una nueva tarea.
-                    </p>
+                    <div class="messages-empty__icon">📋</div>
+                    <p class="messages-empty__text">El usuario no tiene tareas</p>
+                    <p class="messages-empty__subtext">Registre una nueva tarea.</p>
                 </div>
             `;
             return;
         }
 
-        tasks.forEach((task) => {
-            addTaskToTable(task);
-        });
+        tasks.forEach(addTaskToTable);
     } catch (error) {
         toggleTaskForm(true);
-
         userInfoDisplay.innerHTML = `
-            <div class="message-card__content">
-                ❌ Error al consultar el servidor
-            </div>
+            <div class="message-card__content">❌ ${error.message}</div>
         `;
-
-        showErrorMessage("Error al consultar el servidor");
+        showErrorMessage(error.message);
         console.error(error);
     }
 });
 
 // ============================================
-// EVENTO REGISTRAR TAREA
+// EVENTO REGISTRAR / ACTUALIZAR TAREA
 // ============================================
 
 taskForm.addEventListener("submit", async (event) => {
@@ -105,35 +90,82 @@ taskForm.addEventListener("submit", async (event) => {
     const title = taskTitle.value.trim();
     const description = taskDesc.value.trim();
     const status = taskStatus.value;
+    const editingId = getEditingTaskId();
 
     if (title === "" || description === "" || status === "") {
         showErrorMessage("Todos los campos son obligatorios");
         return;
     }
 
-    const newTask = {
-        userId: getCurrentUser().id,
-        title: title,
-        description: description,
-        status: status,
-    };
-
     try {
-        const response = await fetch(apiTasks, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newTask),
-        });
+        if (editingId) {
+            const taskEdit = await updateTask(editingId, { title, description, status });
 
-        const taskSaved = await response.json();
+            const card = document.getElementById(taskEdit.id);
+            if (card) {
+                const statusMap = {
+                    "pendiente": "Pendiente",
+                    "en-progreso": "En Progreso",
+                    "completada": "Completada",
+                };
+                const statusText = statusMap[taskEdit.status];
 
-        addTaskToTable(taskSaved);
-        taskForm.reset();
-        showMessage("Tarea registrada correctamente");
+                card.querySelector(".message-card__title").textContent = taskEdit.title;
+                card.querySelector(".message-card__content").textContent = taskEdit.description;
+
+                const badge = card.querySelector(".task-badge");
+                badge.className = `task-badge task-badge--${taskEdit.status}`;
+                badge.textContent = statusText;
+            }
+
+            setEditingTaskId(null);
+            taskForm.reset();
+            taskForm.querySelector('button[type="submit"]').textContent = "Guardar Tarea";
+            showMessage("Tarea actualizada correctamente");
+        } else {
+            const taskSaved = await createTask({
+                userId: getCurrentUser().id,
+                title,
+                description,
+                status,
+            });
+
+            addTaskToTable(taskSaved);
+            taskForm.reset();
+            showMessage("Tarea registrada correctamente");
+        }
     } catch (error) {
-        showErrorMessage("Error al registrar tarea");
+        showErrorMessage(error.message);
         console.error(error);
     }
+});
+
+// ============================================
+// EVENTO EDITAR TAREA
+// ============================================
+
+tasksTable.addEventListener("click", (event) => {
+    const btnUpdate = event.target.closest(".btnUpdate");
+    if (!btnUpdate) return;
+
+    event.preventDefault();
+
+    const taskId = btnUpdate.getAttribute("data-id");
+    const currentCard = btnUpdate.closest(".message-card");
+    if (!currentCard) return;
+
+    const currentTitleText = currentCard.querySelector(".message-card__title").textContent.replace("Tarea: ", "").trim();
+    const currentDescText = currentCard.querySelector(".message-card__content").textContent.trim();
+
+    taskTitle.value = currentTitleText;
+    taskDesc.value = currentDescText;
+    taskStatus.value = "";
+
+    setEditingTaskId(taskId);
+
+    const submitBtn = taskForm.querySelector('button[type="submit"]');
+    submitBtn.textContent = "Actualizar Tarea";
+
+    taskForm.scrollIntoView({ behavior: "smooth", block: "center" });
+    taskTitle.focus();
 });

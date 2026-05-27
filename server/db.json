@@ -1,27 +1,27 @@
 {
   "users": [
     {
-      "id": "1001234567",
+      "id": "1",
       "name": "Ana Torres",
       "email": "ana.torres@mail.com"
     },
     {
-      "id": "1002345678",
+      "id": "2",
       "name": "Carlos Gómez",
       "email": "carlos.gomez@mail.com"
     },
     {
-      "id": "1003456789",
+      "id": "3",
       "name": "María López",
       "email": "maria.lopez@mail.com"
     },
     {
-      "id": "1004567890",
+      "id": "4",
       "name": "Juan Pérez",
       "email": "juan.perez@mail.com"
     },
     {
-      "id": "1005678901",
+      "id": "5",
       "name": "Laura Martínez",
       "email": "laura.martinez@mail.com"
     },
@@ -53,38 +53,36 @@
   ],
   "tasks": [
     {
-      "userId": "1001234567",
-      "title": "hola",
+      "userId": "1",
+      "title": "chao",
       "description": "oal",
-      "status": "pendiente",
-      "completed": false,
+      "status": "en-progreso",
       "id": "gaAI-1L-q98"
     },
     {
-      "userId": "1001234567",
+      "userId": "1",
       "title": "queso",
-      "description": "comprar queso",
+      "description": "talvez",
       "status": "completada",
-      "completed": true,
       "id": "HTCaa311zZk"
     },
     {
-      "userId": "1002345678",
-      "title": "boton",
+      "userId": "2",
+      "title": "botones",
       "description": "crear un boton",
       "status": "en-progreso",
       "completed": false,
       "id": "Iphia2JC0DY"
     },
     {
-      "userId": "1003456789",
+      "userId": "3",
       "title": "hacer tareas",
       "description": "hacer la tarea de ingles",
       "status": "pendiente",
       "id": "U-gu2OTYZKs"
     },
     {
-      "userId": "1004567890",
+      "userId": "4",
       "title": "nueva tarea",
       "description": "running",
       "status": "completada",

@@ -22,6 +22,8 @@ import {
     showErrorMessage,
     getCurrentUser,
     setCurrentUser,
+    getEditingTaskId,
+    setEditingTaskId,
 } from "./src/index.js";
 
 // ============================================
@@ -55,13 +57,28 @@ btnSearch.addEventListener("click", async () => {
         if (!response.ok) {
             toggleTaskForm(true);
 
+            let errorText = "Error al buscar usuario";
+            if (response.status === 404) {
+                errorText = "Usuario no encontrado";
+            } else if (response.status === 500) {
+                errorText = "Error interno del servidor";
+            } else if (response.status === 400) {
+                errorText = "Petición incorrecta";
+            } else if (response.status === 403) {
+                errorText = "Acceso denegado";
+            } else if (response.status === 401) {
+                errorText = "No autorizado";
+            }
+
+            const errorMsg = `${errorText} (Código: ${response.status})`;
+
             userInfoDisplay.innerHTML = `
                 <div class="message-card__content">
-                    ❌ Usuario no encontrado
+                    ❌ ${errorMsg}
                 </div>
             `;
 
-            showErrorMessage("Usuario no encontrado");
+            showErrorMessage(errorMsg);
             return;
         }
 
@@ -72,9 +89,16 @@ btnSearch.addEventListener("click", async () => {
         toggleTaskForm(false);
         showMessage("Usuario encontrado correctamente");
 
-        const tasksResponse = await fetch(
-            `${apiUrl}/${getCurrentUser().id}?_embed=tasks`,
-        );
+        const tasksResponse = await fetch(`${apiUrl}/${getCurrentUser().id}?_embed=tasks`);
+
+        if (!tasksResponse.ok) {
+            let errorText = "Error al obtener las tareas";
+            if (tasksResponse.status === 500) {
+                errorText = "Error interno del servidor al obtener tareas";
+            }
+            showErrorMessage(`${errorText} (Código: ${tasksResponse.status})`);
+            return;
+        }
 
         const userTasks = await tasksResponse.json();
         const tasks = userTasks.tasks || [];
@@ -106,13 +130,15 @@ btnSearch.addEventListener("click", async () => {
     } catch (error) {
         toggleTaskForm(true);
 
+        const errorMsg = "Error de red: No se pudo establecer conexión con el servidor";
+
         userInfoDisplay.innerHTML = `
             <div class="message-card__content">
-                ❌ Error al consultar el servidor
+                ❌ ${errorMsg}
             </div>
         `;
 
-        showErrorMessage("Error al consultar el servidor");
+        showErrorMessage(errorMsg);
         console.error(error);
     }
 });
@@ -127,36 +153,105 @@ taskForm.addEventListener("submit", async (event) => {
     const title = taskTitle.value.trim();
     const description = taskDesc.value.trim();
     const status = taskStatus.value;
+    const editingId = getEditingTaskId();
 
     if (title === "" || description === "" || status === "") {
         showErrorMessage("Todos los campos son obligatorios");
         return;
     }
 
-    const newTask = {
-        userId: getCurrentUser().id,
-        title: title,
-        description: description,
-        status: status,
-    };
+    if (editingId) {
+        try {
+            const response = await fetch(`${apiTasks}/${editingId}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title, description, status }),
+            });
 
-    try {
-        const response = await fetch(apiTasks, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newTask),
-        });
+            if (!response.ok) {
+                let errorText = "Error al actualizar la tarea";
+                if (response.status === 404) {
+                    errorText = "Tarea no encontrada";
+                } else if (response.status === 500) {
+                    errorText = "Error interno del servidor";
+                }
+                showErrorMessage(`${errorText} (Código: ${response.status})`);
+                return;
+            }
 
-        const taskSaved = await response.json();
+            const taskEdit = await response.json();
 
-        addTaskToTable(taskSaved);
-        taskForm.reset();
-        showMessage("Tarea registrada correctamente");
-    } catch (error) {
-        showErrorMessage("Error al registrar tarea");
-        console.error(error);
+            const card = document.getElementById(taskEdit.id);
+            if (card) {
+                let statusText = "";
+                switch (taskEdit.status) {
+                    case "pendiente":
+                        statusText = "Pendiente";
+                        break;
+                    case "en-progreso":
+                        statusText = "En Progreso";
+                        break;
+                    case "completada":
+                        statusText = "Completada";
+                        break;
+                    default:
+                        statusText = "Sin estado";
+                        break;
+                }
+
+                card.querySelector(".message-card__title").textContent = `${taskEdit.title}`;
+                card.querySelector(".message-card__content").textContent = taskEdit.description || "Sin descripción";
+
+                const badge = card.querySelector(".task-badge");
+                badge.className = `task-badge task-badge--${taskEdit.status}`;
+                badge.textContent = statusText;
+            }
+
+            setEditingTaskId(null);
+            taskForm.reset();
+            const submitBtn = taskForm.querySelector('button[type="submit"]');
+            submitBtn.textContent = "Guardar Tarea";
+
+            showMessage("Tarea actualizada correctamente");
+        } catch (error) {
+            showErrorMessage("Error de red: No se pudo establecer conexión con el servidor");
+            console.error(error);
+        }
+    } else {
+        const newTask = {
+            userId: getCurrentUser().id,
+            title,
+            description,
+            status,
+        };
+
+        try {
+            const response = await fetch(apiTasks, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newTask),
+            });
+
+            if (!response.ok) {
+                let errorText = "Error al registrar la tarea";
+                if (response.status === 400) {
+                    errorText = "Datos de tarea inválidos";
+                } else if (response.status === 500) {
+                    errorText = "Error interno del servidor";
+                }
+                showErrorMessage(`${errorText} (Código: ${response.status})`);
+                return;
+            }
+
+            const taskSaved = await response.json();
+
+            addTaskToTable(taskSaved);
+            taskForm.reset();
+            showMessage("Tarea registrada correctamente");
+        } catch (error) {
+            showErrorMessage("Error de red: No se pudo establecer conexión con el servidor");
+            console.error(error);
+        }
     }
 });
 
@@ -164,26 +259,28 @@ taskForm.addEventListener("submit", async (event) => {
 // EVENTO EDITAR TAREA
 // ============================================
 
-addEventListener("click", async (events) => {
+tasksTable.addEventListener("click", (event) => {
+    const btnUpdate = event.target.closest(".btnUpdate");
+    if (!btnUpdate) return;
+
     event.preventDefault();
 
-    // traer las tareas del usuario
-    let currentUser = getCurrentUser();
+    const taskId = btnUpdate.getAttribute("data-id");
+    const currentCard = btnUpdate.closest(".message-card");
+    if (!currentCard) return;
 
-    try {
-        const response = await fetch(apiTasks, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(bodyTask),
-        });
+    const currentTitleText = currentCard.querySelector(".message-card__title").textContent.replace("Tarea: ", "").trim();
+    const currentDescText = currentCard.querySelector(".message-card__content").textContent.trim();
 
-        const taskEdit = await response.json();
+    taskTitle.value = currentTitleText;
+    taskDesc.value = currentDescText;
+    taskStatus.value = "";
 
-        showMessage("Tarea actualizada correctamente");
-    } catch (error) {
-        showErrorMessage("Error al actualizar la tarea");
-        console.error(error);
-    }
+    setEditingTaskId(taskId);
+
+    const submitBtn = taskForm.querySelector('button[type="submit"]');
+    submitBtn.textContent = "Actualizar Tarea";
+
+    taskForm.scrollIntoView({ behavior: "smooth", block: "center" });
+    taskTitle.focus();
 });

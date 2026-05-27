@@ -20,7 +20,7 @@ export const showUserInfo = (user) => {
                         ${user.name}
                     </div>
 
-                    <div class="message-card__timestamp">
+                    <div class="message-card__title">
                         Usuario encontrado
                     </div>
                 </div>

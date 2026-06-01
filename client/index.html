@@ -11,6 +11,7 @@
 <body>
 
   <div class="container">
+
     <!-- HEADER DEL SITIO -->
     <header class="header">
       <h1 class="header__title">Gestor de Tareas</h1>
@@ -38,7 +39,8 @@
           <input type="text" id="task-title" class="form__input" placeholder="Título de la tarea">
         </div>
         <div class="form__group">
-          <textarea id="task-desc" class="form__input form__textarea" placeholder="Descripción de la tarea"></textarea>
+          <textarea id="task-desc" class="form__input form__textarea"
+            placeholder="Descripción de la tarea"></textarea>
         </div>
         <div class="form__group">
           <select id="task-status" class="form__input">
@@ -48,7 +50,7 @@
             <option value="completada">Completada</option>
           </select>
         </div>
-        <!-- El botón ovalado del esquema -->
+
         <div class="text-center">
           <button type="submit" class="btn btn--primary btn--oval">
             Guardar Tarea
@@ -59,35 +61,61 @@
 
     <!-- BLOQUE 3: RESULTADOS Y TABLA -->
     <section class="messages-section">
+
       <div class="messages-header">
         <h2 class="messages-header__title">Información del Usuario</h2>
         <span class="messages-header__count" id="task-count">0 Tareas</span>
       </div>
 
-      <!-- Contenedor para mostrar info del usuario o mensaje de "no encontrado" -->
+      <!-- Contenedor info usuario -->
       <div id="user-info-display" class="message-card">
         <div class="message-card__content">
           Esperando consulta de usuario...
         </div>
       </div>
 
-      <!-- Tabla Dinámica -->
+      <!-- TABLA DE TAREAS -->
       <div class="card">
         <div class="messages-container" id="tasks-table">
-          <!-- Aquí se cargarán las tareas dinámicamente -->
+
+          <!-- Lista de tareas -->
+          <ul id="listaTareas">
+
+            <li class="task-item">
+              <div>
+                <strong>Tarea 1</strong><br>
+                <span>Descripción de la tarea</span>
+              </div>
+
+              <button
+                onclick="eliminarTarea(1, this.parentElement)"
+                class="btn btn--danger">
+                Eliminar
+              </button>
+            </li>
+
+          </ul>
+
+          <!-- Mensaje vacío -->
           <div class="messages-empty">
             <div class="messages-empty__icon">📋</div>
             <p class="messages-empty__text">No hay tareas registradas</p>
-            <p class="messages-empty__subtext">Busque un usuario para ver su listado.</p>
+            <p class="messages-empty__subtext">
+              Busque un usuario para ver su listado.
+            </p>
           </div>
+
         </div>
       </div>
+
     </section>
 
     <footer class="footer">
       <p class="footer__text">&copy; 2026 - Proyecto de Jhon Gelvez || Jhon Falcon</p>
     </footer>
+
   </div>
+
   <script src="app.js" type="module"></script>
 </body>
 

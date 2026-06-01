@@ -22,6 +22,7 @@ import {
     getUserTasks,
     createTask,
     updateTask,
+    getElementById
 } from "./src/index.js";
 
 toggleTaskForm(true);
@@ -80,6 +81,40 @@ btnSearch.addEventListener("click", async () => {
     }
 });
 
+// Contenedor donde están las tareas
+const listaTareas = document.getElementById("listaTareas");
+
+// Función eliminar tarea
+async function eliminarTarea(id, elementoTarea) {
+
+    // Confirmación antes de eliminar
+    const confirmar = confirm("¿Deseas eliminar esta tarea?");
+
+    if (!confirmar) return;
+
+    try {
+
+        // Petición a la API
+        const respuesta = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+            method: "DELETE"
+        });
+
+        if (respuesta.ok) {
+
+            // Elimina la tarea del DOM sin recargar
+            elementoTarea.remove();
+
+            alert("La tarea fue eliminada correctamente.");
+
+        } else {
+            alert("No se pudo eliminar la tarea.");
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert("Ocurrió un inconveniente al eliminar la tarea.");
+    }
+}
 // ============================================
 // EVENTO REGISTRAR / ACTUALIZAR TAREA
 // ============================================

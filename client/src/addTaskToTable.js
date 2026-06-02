@@ -4,7 +4,7 @@ import {
     getCurrentUser,
     incrementTotalTasks,
     getTotalTasks,
-} from "../services/config.js";
+} from "../config.js";
 
 // ============================================
 // AGREGAR TAREA A LA TABLA

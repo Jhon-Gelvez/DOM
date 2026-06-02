@@ -40,7 +40,7 @@ btnSearch.addEventListener("click", async () => {
 
     searchError.textContent = "";
 
-    if (documentValue === "") {
+    if (!isValidInput(documentValue)) {
         searchError.textContent = "Debe ingresar un documento";
         showErrorMessage("Debe ingresar un documento");
         return;
@@ -78,9 +78,9 @@ btnSearch.addEventListener("click", async () => {
     } catch (error) {
         toggleTaskForm(true);
         userInfoDisplay.innerHTML = `
-            <div class="message-card__content">❌ ${"Error en la petición"}</div>
+            <div class="message-card__content">❌ ${"Recurso no encontrado"}</div>
         `;
-        showErrorMessage(error.message);
+        showErrorMessage("Error en la peticion");
         console.error(error);
     }
 });
@@ -97,8 +97,25 @@ taskForm.addEventListener("submit", async (event) => {
     const status = taskStatus.value;
     const editingId = getEditingTaskId();
 
-    if (!isValidInput(title) || !isValidInput(description) || !isValidInput(status)) {
-        showErrorMessage("Todos los campos son obligatorios");
+    titleError.textContent = "";
+    descError.textContent = "";
+    statusError.textContent = "";
+
+    if (!isValidInput(title)) {
+        titleError.textContent = "Debe ingresar un título";
+        showErrorMessage("Debe ingresar un título");
+        return;
+    }
+
+    if (!isValidInput(description)) {
+        descError.textContent = "Debe ingresar una descripción";
+        showErrorMessage("Debe ingresar una descripción");
+        return;
+    }
+
+    if (!isValidInput(status)) {
+        statusError.textContent = "Debe seleccionar un estado";
+        showErrorMessage("Debe seleccionar un estado");
         return;
     }
 

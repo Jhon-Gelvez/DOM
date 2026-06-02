@@ -72,6 +72,9 @@ export const addTaskToTable = (task) => {
             <button type="button" class="btn btn--secondary btnUpdate" data-id="${task.id}">
                 Actualizar
             </button>
+            <button type="button" class="btn btn--secondary btnDelete" data-id="${task.id}">
+                Eliminar
+            </button>
         </div>
     `;
 

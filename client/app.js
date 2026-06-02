@@ -22,6 +22,7 @@ import {
     getUserTasks,
     createTask,
     updateTask,
+    deleteTask,
 } from "./src/index.js";
 
 toggleTaskForm(true);
@@ -168,4 +169,26 @@ tasksTable.addEventListener("click", (event) => {
 
     taskForm.scrollIntoView({ behavior: "smooth", block: "center" });
     taskTitle.focus();
+});
+
+// ============================================
+// EVENTO ELIMINAR TAREA
+// ============================================
+
+tasksTable.addEventListener("click", async (event) => {
+    const btnDelete = event.target.closest(".btnDelete");
+    if (!btnDelete) return;
+
+    event.preventDefault();
+    const taskId = btnDelete.getAttribute("data-id");
+    const currentCard = btnDelete.closest(".message-card");
+
+    try {
+        await deleteTask(taskId);
+        currentCard.remove();
+        showMessage("Tarea eliminada correctamente");
+    } catch (error) {
+        showErrorMessage(error.message);
+        console.error(error);
+    }
 });

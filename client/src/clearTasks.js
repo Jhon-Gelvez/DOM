@@ -1,4 +1,4 @@
-import { tasksTable, taskCount, resetTasks } from "../config.js";
+import { tasksTable, taskCount, resetTasks } from "./config.js";
 
 // ============================================
 // LIMPIAR TABLA

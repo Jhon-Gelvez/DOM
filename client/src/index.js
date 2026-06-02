@@ -12,3 +12,4 @@ export { getUserByDocument } from "./api/getUser.js";
 export { getUserTasks } from "./api/getUserTasks.js";
 export { createTask } from "./api/createTask.js";
 export { updateTask } from "./api/updateTask.js";
+export { deleteTask } from "./api/deleteTask.js";

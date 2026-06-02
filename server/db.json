@@ -67,21 +67,6 @@
       "id": "HTCaa311zZk"
     },
     {
-      "userId": "2",
-      "title": "botones",
-      "description": "crear un boton",
-      "status": "en-progreso",
-      "completed": false,
-      "id": "Iphia2JC0DY"
-    },
-    {
-      "userId": "3",
-      "title": "hacer tareas",
-      "description": "hacer la tarea de ingles",
-      "status": "pendiente",
-      "id": "U-gu2OTYZKs"
-    },
-    {
       "userId": "4",
       "title": "nueva tarea",
       "description": "running",

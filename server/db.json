@@ -67,11 +67,33 @@
       "id": "HTCaa311zZk"
     },
     {
-      "userId": "4",
-      "title": "nueva tarea",
-      "description": "running",
-      "status": "completada",
-      "id": "gJjJd8q4_Y0"
+      "userId": "2",
+      "title": "botones",
+      "description": "crear un boton",
+      "status": "en-progreso",
+      "completed": false,
+      "id": "Iphia2JC0DY"
+    },
+    {
+      "userId": "3",
+      "title": "hacer tareas",
+      "description": "hacer la tarea de ingles",
+      "status": "pendiente",
+      "id": "U-gu2OTYZKs"
+    },
+    {
+      "userId": "2",
+      "title": "Quo ducimus omnis m",
+      "description": "Fugit aut voluptate",
+      "status": "en-progreso",
+      "id": "0CJDrT19MdE"
+    },
+    {
+      "userId": "2",
+      "title": "Et ut lorem voluptas",
+      "description": "Cumque duis ut quis",
+      "status": "en-progreso",
+      "id": "YvG7HhwSY6o"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

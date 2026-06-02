@@ -35,9 +35,11 @@
       <form id="task-form">
         <div class="form__group">
           <input type="text" id="task-title" class="form__input" placeholder="Título de la tarea">
+          <span id="title-error" class="form__error"></span>
         </div>
         <div class="form__group">
           <textarea id="task-desc" class="form__input form__textarea" placeholder="Descripción de la tarea"></textarea>
+          <span id="desc-error" class="form__error"></span>
         </div>
         <div class="form__group">
           <select id="task-status" class="form__input">
@@ -46,6 +48,7 @@
             <option value="en-progreso">En Progreso</option>
             <option value="completada">Completada</option>
           </select>
+          <span id="status-error" class="form__error"></span>
         </div>
         <!-- El botón ovalado del esquema -->
         <div class="text-center">

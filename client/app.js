@@ -5,8 +5,11 @@ import {
     userInfoDisplay,
     taskForm,
     taskTitle,
+    titleError,
     taskDesc,
+    descError,
     taskStatus,
+    statusError,
     tasksTable,
     getCurrentUser,
     setCurrentUser,
@@ -93,7 +96,26 @@ taskForm.addEventListener("submit", async (event) => {
     const status = taskStatus.value;
     const editingId = getEditingTaskId();
 
-    if (title === "" || description === "" || status === "") {
+    titleError.textContent = "";
+    descError.textContent = "";
+    statusError.textContent = "";
+
+    let hasError = false;
+
+    if (title === "") {
+        titleError.textContent = "El título es obligatorio";
+        hasError = true;
+    }
+    if (description === "") {
+        descError.textContent = "La descripción es obligatoria";
+        hasError = true;
+    }
+    if (status === "") {
+        statusError.textContent = "Debe seleccionar un estado";
+        hasError = true;
+    }
+
+    if (hasError) {
         showErrorMessage("Todos los campos son obligatorios");
         return;
     }

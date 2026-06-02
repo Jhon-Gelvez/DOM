@@ -36,7 +36,7 @@ export const showErrorMessage = (message) => {
 
     alertBox.innerHTML = `
         <div class="message-card__content">
-            ❌ ${message}
+            ❌ ${"Error al llamar al servidor"}
         </div>
     `;
 

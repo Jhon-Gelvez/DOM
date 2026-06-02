@@ -1,4 +1,10 @@
-import { tasksTable, taskCount, getCurrentUser, incrementTotalTasks, getTotalTasks } from "./config.js";
+import {
+    tasksTable,
+    taskCount,
+    getCurrentUser,
+    incrementTotalTasks,
+    getTotalTasks,
+} from "../services/config.js";
 
 // ============================================
 // AGREGAR TAREA A LA TABLA
@@ -83,4 +89,3 @@ export const addTaskToTable = (task) => {
     incrementTotalTasks();
     taskCount.textContent = `${getTotalTasks()} Tareas`;
 };
-

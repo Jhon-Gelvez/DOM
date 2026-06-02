@@ -23,6 +23,7 @@ import {
     createTask,
     updateTask,
     deleteTask,
+    isValidInput,
 } from "./src/index.js";
 
 toggleTaskForm(true);
@@ -93,7 +94,7 @@ taskForm.addEventListener("submit", async (event) => {
     const status = taskStatus.value;
     const editingId = getEditingTaskId();
 
-    if (title === "" || description === "" || status === "") {
+    if (!isValidInput(title) || !isValidInput(description) || !isValidInput(status)) {
         showErrorMessage("Todos los campos son obligatorios");
         return;
     }

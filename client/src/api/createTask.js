@@ -1,4 +1,5 @@
-import { apiTasks } from "../config.js";
+import { apiTasks } from "../services/config.js";
+import { handleApiError } from "../utils/handleApiError.js";
 
 export const createTask = async (taskData) => {
     const response = await fetch(apiTasks, {
@@ -7,18 +8,8 @@ export const createTask = async (taskData) => {
         body: JSON.stringify(taskData),
     });
 
-    if (!response.ok) {
-        let errorText = "Error al registrar la tarea";
-
-        switch (response.status) {
-            case 400: errorText = "Datos de tarea inválidos"; break;
-            case 500: errorText = "Error interno del servidor"; break;
-        }
-
-        const error = new Error(`${errorText} (Código: ${response.status})`);
-        error.status = response.status;
-        throw error;
-    }
-
-    return await response.json();
+    return handleApiError(response, "Error al registrar la tarea", {
+        400: "Datos de tarea inválidos",
+        500: "Error interno del servidor",
+    });
 };

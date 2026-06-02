@@ -85,14 +85,14 @@
       "userId": "2",
       "title": "Quo ducimus omnis m",
       "description": "Fugit aut voluptate",
-      "status": "en-progreso",
+      "status": "completada",
       "id": "0CJDrT19MdE"
     },
     {
       "userId": "2",
       "title": "Et ut lorem voluptas",
       "description": "Cumque duis ut quis",
-      "status": "en-progreso",
+      "status": "pendiente",
       "id": "YvG7HhwSY6o"
     }
   ],

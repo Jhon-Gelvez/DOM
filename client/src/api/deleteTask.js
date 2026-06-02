@@ -1,22 +1,13 @@
-import { apiTasks } from "../config.js";
+import { apiTasks } from "../services/config.js";
+import { handleApiError } from "../utils/handleApiError.js";
 
 export const deleteTask = async (taskId) => {
     const response = await fetch(`${apiTasks}/${taskId}`, {
         method: "DELETE",
     });
 
-    if (!response.ok) {
-        let errorText = "Error al eliminar la tarea";
-
-        switch (response.status) {
-            case 404: errorText = "Tarea no encontrada"; break;
-            case 500: errorText = "Error interno del servidor"; break;
-        }
-
-        const error = new Error(`${errorText} (Código: ${response.status})`);
-        error.status = response.status;
-        throw error;
-    }
-
-    return await response.json();
+    return handleApiError(response, "Error al eliminar la tarea", {
+        404: "Tarea no encontrada",
+        500: "Error interno del servidor",
+    });
 };

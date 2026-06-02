@@ -7,6 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
+    "start": "serve client -l 3001",
+    "api": "json-server --watch server/db.json -p 3044",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

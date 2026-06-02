@@ -7,7 +7,7 @@ export const getUserByDocument = async (documentValue) => {
         let errorText = "Error al buscar usuario";
 
         switch (response.status) {
-            case 404: errorText = "Usuario no encontrado"; break;
+            case 404: errorText = "Recurso no encontrado"; break;
             case 500: errorText = "Error interno del servidor"; break;
             case 400: errorText = "Petición incorrecta"; break;
             case 403: errorText = "Acceso denegado"; break;

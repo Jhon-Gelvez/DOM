@@ -74,7 +74,7 @@ btnSearch.addEventListener("click", async () => {
     } catch (error) {
         toggleTaskForm(true);
         userInfoDisplay.innerHTML = `
-            <div class="message-card__content">❌ ${error.message}</div>
+            <div class="message-card__content">❌ ${"Error en la petición"}</div>
         `;
         showErrorMessage(error.message);
         console.error(error);

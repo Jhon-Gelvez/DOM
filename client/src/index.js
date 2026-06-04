@@ -5,12 +5,12 @@
 export * from "./config.js";
 
 export {
-    toggleTaskForm,
-    clearTasks,
-    showUserInfo,
-    addTaskToTable,
-    showMessage,
-    showErrorMessage,
+  toggleTaskForm,
+  clearTasks,
+  showUserInfo,
+  addTaskToTable,
+  showMessage,
+  showErrorMessage,
 } from "./ui/index.js";
 
 export { getUserByDocument } from "./getUser.js";

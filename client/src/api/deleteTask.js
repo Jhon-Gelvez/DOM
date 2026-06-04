@@ -1,4 +1,4 @@
-import { apiTasks } from "./config.js";
+import { apiTasks } from "../config.js";
 import { handleApiError } from "./handleApiError.js";
 
 export const deleteTask = async (taskId) => {

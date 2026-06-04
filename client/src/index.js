@@ -3,21 +3,23 @@
 // ============================================
 
 export * from "./config.js";
-
+// Las exportaciones de UI
 export {
-  toggleTaskForm,
-  clearTasks,
-  showUserInfo,
-  addTaskToTable,
-  showMessage,
-  showErrorMessage,
+    toggleTaskForm,
+    clearTasks,
+    showUserInfo,
+    addTaskToTable,
+    showMessage,
+    showErrorMessage,
 } from "./ui/index.js";
 
-export { getUserByDocument } from "./getUser.js";
-export { getUserTasks } from "./getUserTasks.js";
-export { createTask } from "./createTask.js";
-export { updateTask } from "./updateTask.js";
-export { deleteTask } from "./deleteTask.js";
+// SE AGREGA /api/ PORQUE TUS ARCHIVOS AHORA ESTÁN DENTRO DE ESA CARPETA
+export { getUserByDocument } from "./api/getUser.js";
+export { getUserTasks } from "./api/getUserTasks.js";
+export { createTask } from "./api/createTask.js";
+export { updateTask } from "./api/updateTask.js";
+export { deleteTask } from "./api/deleteTask.js";
+export { handleApiError } from "./api/handleApiError.js";
+
 export { isValidInput } from "./validateInput.js";
-export { handleApiError } from "./handleApiError.js";
 export { setTextContent } from "./setTextContent.js";

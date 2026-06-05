@@ -28,6 +28,10 @@ import {
     updateTask,
     deleteTask,
     isValidInput,
+    getStatusLabel,
+    setTextContent,
+    setInnerHtml,
+    handleError,
 } from "./src/index.js";
 
 toggleTaskForm(true);
@@ -39,10 +43,10 @@ toggleTaskForm(true);
 btnSearch.addEventListener("click", async () => {
     const documentValue = userDocInput.value.trim();
 
-    searchError.textContent = "";
+    setTextContent(searchError, "");
 
     if (!isValidInput(documentValue)) {
-        searchError.textContent = "Debe ingresar un documento";
+        setTextContent(searchError, "Debe ingresar un documento");
         showErrorMessage("Debe ingresar un documento");
         return;
     }
@@ -50,7 +54,7 @@ btnSearch.addEventListener("click", async () => {
     try {
         clearTasks();
         setCurrentUser(null);
-        userInfoDisplay.innerHTML = "";
+        setInnerHtml(userInfoDisplay, "");
 
         const userFound = await getUserByDocument(documentValue);
         setCurrentUser(userFound);
@@ -65,16 +69,26 @@ btnSearch.addEventListener("click", async () => {
         clearTasks();
 
         if (!tasks.length) {
+<<<<<<< HEAD
+            setInnerHtml(tasksTable, `
+                <div class="messages-empty">
+                    <div class="messages-empty__icon">📋</div>
+                    <p class="messages-empty__text">El usuario no tiene tareas</p>
+                    <p class="messages-empty__subtext">Registre una nueva tarea.</p>
+                </div>
+            `);
+=======
             showEmptyTasks();
+>>>>>>> modularizacion-base
             return;
         }
 
         tasks.forEach(addTaskToTable);
     } catch (error) {
         toggleTaskForm(true);
-        userInfoDisplay.innerHTML = `
-            <div class="message-card__content">❌ ${"Recurso no encontrado"}</div>
-        `;
+        setInnerHtml(userInfoDisplay, `
+            <div class="message-card__content">❌ Recurso no encontrado</div>
+        `);
         showErrorMessage("Error en la peticion");
         console.error(error);
     }
@@ -92,24 +106,24 @@ taskForm.addEventListener("submit", async (event) => {
     const status = taskStatus.value;
     const editingId = getEditingTaskId();
 
-    titleError.textContent = "";
-    descError.textContent = "";
-    statusError.textContent = "";
+    setTextContent(titleError, "");
+    setTextContent(descError, "");
+    setTextContent(statusError, "");
 
     if (!isValidInput(title)) {
-        titleError.textContent = "Debe ingresar un título";
+        setTextContent(titleError, "Debe ingresar un título");
         showErrorMessage("Debe ingresar un título");
         return;
     }
 
     if (!isValidInput(description)) {
-        descError.textContent = "Debe ingresar una descripción";
+        setTextContent(descError, "Debe ingresar una descripción");
         showErrorMessage("Debe ingresar una descripción");
         return;
     }
 
     if (!isValidInput(status)) {
-        statusError.textContent = "Debe seleccionar un estado";
+        setTextContent(statusError, "Debe seleccionar un estado");
         showErrorMessage("Debe seleccionar un estado");
         return;
     }
@@ -120,24 +134,19 @@ taskForm.addEventListener("submit", async (event) => {
 
             const card = document.getElementById(taskEdit.id);
             if (card) {
-                const statusMap = {
-                    "pendiente": "Pendiente",
-                    "en-progreso": "En Progreso",
-                    "completada": "Completada",
-                };
-                const statusText = statusMap[taskEdit.status];
+                const statusText = getStatusLabel(taskEdit.status);
 
-                card.querySelector(".message-card__title").textContent = taskEdit.title;
-                card.querySelector(".message-card__content").textContent = taskEdit.description;
+                setTextContent(card.querySelector(".message-card__title"), taskEdit.title);
+                setTextContent(card.querySelector(".message-card__content"), taskEdit.description);
 
                 const badge = card.querySelector(".task-badge");
                 badge.className = `task-badge task-badge--${taskEdit.status}`;
-                badge.textContent = statusText;
+                setTextContent(badge, statusText);
             }
 
             setEditingTaskId(null);
             taskForm.reset();
-            taskForm.querySelector('button[type="submit"]').textContent = "Guardar Tarea";
+            setTextContent(taskForm.querySelector('button[type="submit"]'), "Guardar Tarea");
             showMessage("Tarea actualizada correctamente");
         } else {
             const taskSaved = await createTask({
@@ -152,8 +161,7 @@ taskForm.addEventListener("submit", async (event) => {
             showMessage("Tarea registrada correctamente");
         }
     } catch (error) {
-        showErrorMessage(error.message);
-        console.error(error);
+        handleError(error);
     }
 });
 
@@ -171,8 +179,8 @@ tasksTable.addEventListener("click", (event) => {
     const currentCard = btnUpdate.closest(".message-card");
     if (!currentCard) return;
 
-    const currentTitleText = currentCard.querySelector(".message-card__title").textContent.replace("Tarea: ", "").trim();
-    const currentDescText = currentCard.querySelector(".message-card__content").textContent.trim();
+    const currentTitleText = setTextContent(currentCard.querySelector(".message-card__title")).replace("Tarea: ", "").trim();
+    const currentDescText = setTextContent(currentCard.querySelector(".message-card__content")).trim();
 
     taskTitle.value = currentTitleText;
     taskDesc.value = currentDescText;
@@ -181,7 +189,7 @@ tasksTable.addEventListener("click", (event) => {
     setEditingTaskId(taskId);
 
     const submitBtn = taskForm.querySelector('button[type="submit"]');
-    submitBtn.textContent = "Actualizar Tarea";
+    setTextContent(submitBtn, "Actualizar Tarea");
 
     taskForm.scrollIntoView({ behavior: "smooth", block: "center" });
     taskTitle.focus();
@@ -204,7 +212,6 @@ tasksTable.addEventListener("click", async (event) => {
         currentCard.remove();
         showMessage("Tarea eliminada correctamente");
     } catch (error) {
-        showErrorMessage(error.message);
-        console.error(error);
+        handleError(error);
     }
 });

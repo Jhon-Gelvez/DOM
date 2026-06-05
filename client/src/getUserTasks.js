@@ -1,5 +1,5 @@
 import { apiUrl } from "./config.js";
-import { handleApiError } from "./handleApiError.js";
+import { handleApiError } from "./utils/handleApiError.js";
 
 export const getUserTasks = async (userId) => {
     const response = await fetch(`${apiUrl}/${userId}?_embed=tasks`);

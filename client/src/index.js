@@ -3,11 +3,16 @@
 // ============================================
 
 export * from "./config.js";
-export { toggleTaskForm } from "./toggleTaskForm.js";
-export { clearTasks } from "./clearTasks.js";
-export { showUserInfo } from "./showUserInfo.js";
-export { addTaskToTable } from "./addTaskToTable.js";
-export { showMessage, showErrorMessage } from "./notifications.js";
+
+export {
+    toggleTaskForm,
+    clearTasks,
+    showUserInfo,
+    addTaskToTable,
+    showMessage,
+    showErrorMessage,
+} from "./ui/index.js";
+
 export { getUserByDocument } from "./getUser.js";
 export { getUserTasks } from "./getUserTasks.js";
 export { createTask } from "./createTask.js";

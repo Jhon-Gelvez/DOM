@@ -21,6 +21,7 @@ import {
     addTaskToTable,
     showMessage,
     showErrorMessage,
+    showEmptyTasks,
     getUserByDocument,
     getUserTasks,
     createTask,
@@ -68,6 +69,7 @@ btnSearch.addEventListener("click", async () => {
         clearTasks();
 
         if (!tasks.length) {
+<<<<<<< HEAD
             setInnerHtml(tasksTable, `
                 <div class="messages-empty">
                     <div class="messages-empty__icon">📋</div>
@@ -75,6 +77,9 @@ btnSearch.addEventListener("click", async () => {
                     <p class="messages-empty__subtext">Registre una nueva tarea.</p>
                 </div>
             `);
+=======
+            showEmptyTasks();
+>>>>>>> modularizacion-base
             return;
         }
 

@@ -5,7 +5,7 @@ import {
     incrementTotalTasks,
     getTotalTasks,
 } from "./config.js";
-import { getStatusLabel } from "./statusMapper.js";
+import { getStatusLabel } from "./utils/index.js";
 
 // ============================================
 // AGREGAR TAREA A LA TABLA

@@ -1,4 +1,11 @@
-import { tasksTable, taskCount, getCurrentUser, incrementTotalTasks, getTotalTasks } from "./config.js";
+import {
+    tasksTable,
+    taskCount,
+    getCurrentUser,
+    incrementTotalTasks,
+    getTotalTasks,
+} from "../services/config.js";
+import { getStatusLabel } from "../utils/index.js";
 
 // ============================================
 // AGREGAR TAREA A LA TABLA
@@ -17,25 +24,7 @@ export const addTaskToTable = (task) => {
         taskCard.id = `${task.id}`;
     }
 
-    let statusText = "";
-
-    switch (task.status) {
-        case "pendiente":
-            statusText = "Pendiente";
-            break;
-
-        case "en-progreso":
-            statusText = "En Progreso";
-            break;
-
-        case "completada":
-            statusText = "Completada";
-            break;
-
-        default:
-            statusText = "Sin estado";
-            break;
-    }
+    const statusText = getStatusLabel(task.status);
 
     const currentUser = getCurrentUser();
 
@@ -83,4 +72,3 @@ export const addTaskToTable = (task) => {
     incrementTotalTasks();
     taskCount.textContent = `${getTotalTasks()} Tareas`;
 };
-

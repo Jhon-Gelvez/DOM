@@ -1,20 +1,12 @@
-import { apiUrl } from "../config.js";
+import { apiUrl } from "../services/config.js";
+import { handleApiError } from "../utils/handleApiError.js";
 
 export const getUserTasks = async (userId) => {
-    const response = await fetch(`${apiUrl}/${userId}?_embed=tasks`);
+  const response = await fetch(`${apiUrl}/${userId}?_embed=tasks`);
 
-    if (!response.ok) {
-        let errorText = "Error al obtener las tareas";
+  const data = await handleApiError(response, "Error al obtener las tareas", {
+    500: "Error interno del servidor al obtener tareas",
+  });
 
-        if (response.status === 500) {
-            errorText = "Error interno del servidor al obtener tareas";
-        }
-
-        const error = new Error(`${errorText} (Código: ${response.status})`);
-        error.status = response.status;
-        throw error;
-    }
-
-    const data = await response.json();
-    return data.tasks || [];
+  return data.tasks || [];
 };

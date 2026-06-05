@@ -1,5 +1,5 @@
-import { apiTasks } from "../services/config.js";
-import { handleApiError } from "../utils/handleApiError.js";
+import { apiTasks } from "./config.js";
+import { handleApiError } from "./handleApiError.js";
 
 export const updateTask = async (taskId, taskData) => {
     const response = await fetch(`${apiTasks}/${taskId}`, {

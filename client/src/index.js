@@ -3,15 +3,21 @@
 // ============================================
 
 export * from "./config.js";
-export { toggleTaskForm } from "./ui/toggleTaskForm.js";
-export { clearTasks } from "./ui/clearTasks.js";
-export { showUserInfo } from "./ui/showUserInfo.js";
-export { addTaskToTable } from "./ui/addTaskToTable.js";
-export { showMessage, showErrorMessage } from "./notifications.js";
-export { getUserByDocument } from "./api/getUser.js";
-export { getUserTasks } from "./api/getUserTasks.js";
+
+export {
+    toggleTaskForm,
+    clearTasks,
+    showUserInfo,
+    addTaskToTable,
+    showMessage,
+    showErrorMessage,
+} from "./ui/index.js";
+
+export { getUserByDocument } from "./getUser.js";
+export { getUserTasks } from "./getUserTasks.js";
 export { createTask } from "./createTask.js";
-export { updateTask } from "./api/updateTask.js";
-export { deleteTask } from "./api/deleteTask.js";
+export { updateTask } from "./updateTask.js";
+export { deleteTask } from "./deleteTask.js";
 export { isValidInput } from "./validateInput.js";
 export { handleApiError } from "./handleApiError.js";
+export { setTextContent } from "./setTextContent.js";

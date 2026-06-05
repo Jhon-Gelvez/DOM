@@ -1,5 +1,5 @@
-import { apiUrl } from "../services/config.js";
-import { handleApiError } from "../utils/handleApiError.js";
+import { apiUrl } from "./config.js";
+import { handleApiError } from "./handleApiError.js";
 
 export const getUserByDocument = async (documentValue) => {
     const response = await fetch(`${apiUrl}/${documentValue}`);

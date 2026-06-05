@@ -4,7 +4,7 @@ import {
     getCurrentUser,
     incrementTotalTasks,
     getTotalTasks,
-} from "../config.js";
+} from "../services/config.js";
 import { getStatusLabel } from "../utils/index.js";
 
 // ============================================

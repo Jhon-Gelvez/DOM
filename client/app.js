@@ -22,8 +22,7 @@ import {
     showMessage,
     showErrorMessage,
     showEmptyTasks,
-    getUserByDocument,
-    getUserTasks,
+    searchUser,
     createTask,
     updateTask,
     deleteTask,
@@ -56,16 +55,12 @@ btnSearch.addEventListener("click", async () => {
         setCurrentUser(null);
         setInnerHtml(userInfoDisplay, "");
 
-        const userFound = await getUserByDocument(documentValue);
-        setCurrentUser(userFound);
+        const { user, tasks } = await searchUser(documentValue);
+        setCurrentUser(user);
 
-        showUserInfo(userFound);
+        showUserInfo(user);
         toggleTaskForm(false);
         showMessage("Usuario encontrado correctamente");
-
-        let userId = getCurrentUser().id
-
-        const tasks = await getUserTasks(userId);
         clearTasks();
 
         if (!tasks.length) {

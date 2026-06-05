@@ -1,4 +1,4 @@
-import { tasksTable } from "../config.js";
+import { tasksTable } from "../services/config.js";
 
 export const showEmptyTasks = () => {
     tasksTable.innerHTML = `

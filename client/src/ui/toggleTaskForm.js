@@ -1,4 +1,4 @@
-import { taskForm } from "../config.js";
+import { taskForm } from "../services/config.js";
 
 // ============================================
 // HABILITAR / DESHABILITAR FORMULARIO

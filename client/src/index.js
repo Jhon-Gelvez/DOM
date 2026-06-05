@@ -18,6 +18,5 @@ export { getUserTasks } from "./getUserTasks.js";
 export { createTask } from "./createTask.js";
 export { updateTask } from "./updateTask.js";
 export { deleteTask } from "./deleteTask.js";
-export { setTextContent } from "./setTextContent.js";
-export { setInnerHtml } from "./setInnerHtml.js";
+export { setTextContent, setInnerHtml } from "./ui/index.js";
 export * from "./utils/index.js";

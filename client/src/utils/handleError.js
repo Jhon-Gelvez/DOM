@@ -1,4 +1,4 @@
-import { showErrorMessage } from "../notifications.js";
+import { showErrorMessage } from "../ui/notifications.js";
 
 export const handleError = (error) => {
     showErrorMessage(error.message);

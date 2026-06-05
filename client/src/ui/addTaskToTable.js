@@ -4,8 +4,8 @@ import {
     getCurrentUser,
     incrementTotalTasks,
     getTotalTasks,
-} from "./config.js";
-import { getStatusLabel } from "./utils/index.js";
+} from "../config.js";
+import { getStatusLabel } from "../utils/index.js";
 
 // ============================================
 // AGREGAR TAREA A LA TABLA

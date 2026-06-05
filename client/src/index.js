@@ -2,8 +2,8 @@
 // BARREL FILE - EXPORTA TODOS LOS MÓDULOS
 // ============================================
 
-export * from "./config.js";
-// Las exportaciones de UI
+export * from "./services/config.js";
+
 export {
     toggleTaskForm,
     clearTasks,
@@ -13,11 +13,8 @@ export {
     showErrorMessage,
     setTextContent,
     setInnerHtml,
+    showEmptyTasks,
 } from "./ui/index.js";
 
-export { getUserByDocument } from "./api/getUser.js";
-export { getUserTasks } from "./api/getUserTasks.js";
-export { createTask } from "./api/createTask.js";
-export { updateTask } from "./api/updateTask.js";
-export { deleteTask } from "./api/deleteTask.js";
+export { searchUser, createTask, updateTask, deleteTask } from "./services/index.js";
 export * from "./utils/index.js";

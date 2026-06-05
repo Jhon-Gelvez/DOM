@@ -1,4 +1,4 @@
-import { apiTasks } from "../config.js";
+import { apiTasks } from "../services/config.js";
 import { handleApiError } from "../utils/handleApiError.js";
 
 export const updateTask = async (taskId, taskData) => {

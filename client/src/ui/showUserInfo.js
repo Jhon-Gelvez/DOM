@@ -1,4 +1,4 @@
-import { userInfoDisplay } from "../config.js";
+import { userInfoDisplay } from "../services/config.js";
 
 // ============================================
 // MOSTRAR INFORMACIÓN DEL USUARIO

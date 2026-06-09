@@ -11,6 +11,7 @@ export {
     addTaskToTable,
     showMessage,
     showErrorMessage,
+    showInfoMessage,
     setTextContent,
     setInnerHtml,
     showEmptyTasks,

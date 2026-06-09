@@ -1,5 +1,5 @@
-export const apiUrl = "http://10.5.225.219:3044/users";
-export const apiTasks = "http://10.5.225.219:3044/tasks";
+export const apiUrl = "http://localhost:3044/users";
+export const apiTasks = "http://localhost:3044/tasks"
 
 let currentUser = null;
 let totalTasks = 0;

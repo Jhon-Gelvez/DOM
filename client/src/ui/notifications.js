@@ -1,55 +1,50 @@
-// ============================================
-// MENSAJES TEMPORALES
-// ============================================
-
-export const showMessage = (message) => {
-    const alertBox = document.createElement("div");
-
-    alertBox.classList.add("message-card");
-    alertBox.style.borderLeft = "4px solid #10b981";
-
-    alertBox.innerHTML = `
-        <div class="message-card__content">
-            ✅ ${message}
-        </div>
-    `;
-
-    document.body.appendChild(alertBox);
-
-    alertBox.style.position = "fixed";
-    alertBox.style.top = "20px";
-    alertBox.style.right = "20px";
-    alertBox.style.width = "300px";
-    alertBox.style.zIndex = "999";
-    alertBox.style.background = "white";
-
-    setTimeout(() => {
-        alertBox.remove();
-    }, 3000);
+const TYPE = {
+    SUCCESS: "success",
+    ERROR: "error",
+    INFO: "info",
 };
 
-export const showErrorMessage = (message) => {
-    const alertBox = document.createElement("div");
+const ICON = {
+    [TYPE.SUCCESS]: "✅",
+    [TYPE.ERROR]: "❌",
+    [TYPE.INFO]: "ℹ️",
+};
 
-    alertBox.classList.add("message-card");
-    alertBox.style.borderLeft = "4px solid #ef4444";
+const getContainer = (container) => {
+    if (!container) {
+        container = document.getElementById("notifications-container");
+        if (!container) {
+            container = document.createElement("div");
+            container.id = "notifications-container";
+            document.body.appendChild(container);
+        }
+    }
+    return container;
+};
 
-    alertBox.innerHTML = `
-        <div class="message-card__content">
-            ❌ ${message}
-        </div>
+const notify = (message, type = TYPE.INFO, duration = 1000) => {
+    const toast = document.createElement("div");
+    toast.className = `notification notification--${type}`;
+    toast.setAttribute("role", "alert");
+
+    toast.innerHTML = `
+        <span class="notification__icon">${ICON[type]}</span>
+        <span class="notification__message">${message}</span>
     `;
 
-    document.body.appendChild(alertBox);
+    getContainer().appendChild(toast);
 
-    alertBox.style.position = "fixed";
-    alertBox.style.top = "20px";
-    alertBox.style.right = "20px";
-    alertBox.style.width = "300px";
-    alertBox.style.zIndex = "999";
-    alertBox.style.background = "white";
+    setTimeout(() => dismiss(toast), duration);
 
-    setTimeout(() => {
-        alertBox.remove();
-    }, 3000);
+    return toast;
 };
+
+const dismiss = (toast) => {
+    if (!toast || toast.classList.contains("notification--dismissing")) return;
+    toast.classList.add("notification--dismissing");
+    toast.addEventListener("animationend", () => toast.remove(), { once: true });
+};
+
+export const showMessage = (message) => notify(message, TYPE.SUCCESS);
+export const showErrorMessage = (message) => notify(message, TYPE.ERROR);
+export const showInfoMessage = (message) => notify(message, TYPE.INFO);

@@ -1,4 +1,4 @@
-import { filterStatus, filterTitle } from "../index.js";
+import { filterStatus, filterTitle } from "./config.js";
 
 // ============================================
 //  LÓGICA DE FILTRADO EN TIEMPO REAL 

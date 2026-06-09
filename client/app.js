@@ -31,6 +31,9 @@ import {
     setTextContent,
     setInnerHtml,
     handleError,
+    tasksOrderBar,
+    sortTasks,
+    extractTasksFromDOM
 } from "./src/index.js";
 
 toggleTaskForm(true);
@@ -69,11 +72,18 @@ btnSearch.addEventListener("click", async () => {
         }
 
         tasks.forEach(addTaskToTable);
+        tasksOrderBar();
+        sortTasks(extractTasksFromDOM(), "date").forEach((task) => {
+            tasksTable.appendChild(task.element);
+        });
     } catch (error) {
         toggleTaskForm(true);
-        setInnerHtml(userInfoDisplay, `
+        setInnerHtml(
+            userInfoDisplay,
+            `
             <div class="message-card__content">❌ Recurso no encontrado</div>
-        `);
+        `,
+        );
         showErrorMessage("Error en la peticion");
         console.error(error);
     }
@@ -115,14 +125,24 @@ taskForm.addEventListener("submit", async (event) => {
 
     try {
         if (editingId) {
-            const taskEdit = await updateTask(editingId, { title, description, status });
+            const taskEdit = await updateTask(editingId, {
+                title,
+                description,
+                status,
+            });
 
             const card = document.getElementById(taskEdit.id);
             if (card) {
                 const statusText = getStatusLabel(taskEdit.status);
 
-                setTextContent(card.querySelector(".message-card__title"), taskEdit.title);
-                setTextContent(card.querySelector(".message-card__content"), taskEdit.description);
+                setTextContent(
+                    card.querySelector(".message-card__title"),
+                    taskEdit.title,
+                );
+                setTextContent(
+                    card.querySelector(".message-card__content"),
+                    taskEdit.description,
+                );
 
                 const badge = card.querySelector(".task-badge");
                 badge.className = `task-badge task-badge--${taskEdit.status}`;
@@ -131,7 +151,10 @@ taskForm.addEventListener("submit", async (event) => {
 
             setEditingTaskId(null);
             taskForm.reset();
-            setTextContent(taskForm.querySelector('button[type="submit"]'), "Guardar Tarea");
+            setTextContent(
+                taskForm.querySelector('button[type="submit"]'),
+                "Guardar Tarea",
+            );
             showMessage("Tarea actualizada correctamente");
         } else {
             const taskSaved = await createTask({
@@ -164,8 +187,14 @@ tasksTable.addEventListener("click", (event) => {
     const currentCard = btnUpdate.closest(".message-card");
     if (!currentCard) return;
 
-    const currentTitleText = setTextContent(currentCard.querySelector(".message-card__title")).replace("Tarea: ", "").trim();
-    const currentDescText = setTextContent(currentCard.querySelector(".message-card__content")).trim();
+    const currentTitleText = setTextContent(
+        currentCard.querySelector(".message-card__title"),
+    )
+        .replace("Tarea: ", "")
+        .trim();
+    const currentDescText = setTextContent(
+        currentCard.querySelector(".message-card__content"),
+    ).trim();
 
     taskTitle.value = currentTitleText;
     taskDesc.value = currentDescText;
@@ -199,4 +228,24 @@ tasksTable.addEventListener("click", async (event) => {
     } catch (error) {
         handleError(error);
     }
+});
+
+// ============================================
+// EVENTO ORDENAR TAREAS
+// ============================================
+
+document.addEventListener("change", (event) => {
+    const orderSelect = event.target.closest("#status-order");
+    if (!orderSelect) return;
+
+    const criteria = orderSelect.value || "date";
+
+    const tasks = extractTasksFromDOM();
+    if (!tasks.length) return;
+
+    const sorted = sortTasks(tasks, criteria);
+
+    sorted.forEach((task) => {
+        tasksTable.appendChild(task.element);
+    });
 });

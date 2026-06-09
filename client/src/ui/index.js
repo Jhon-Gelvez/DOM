@@ -1,3 +1,5 @@
+export { extractTasksFromDOM } from "./extractTasksFromDOM.js";
+export { tasksOrderBar } from "./taskOrderBar.js";
 export { toggleTaskForm } from "./toggleTaskForm.js";
 export { clearTasks } from "./clearTasks.js";
 export { showUserInfo } from "./showUserInfo.js";

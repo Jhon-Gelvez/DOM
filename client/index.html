@@ -73,6 +73,26 @@
         </div>
       </div>
 
+      <!-- Filtros de tareas -->
+      <div class="card" style="margin-bottom: var(--spacing-md);">
+        <div class="messages-header">
+          <h2 class="card__title" style="margin-bottom:0;">Filtrar Tareas</h2>
+        </div>
+        <div style="display:flex; gap:var(--spacing-md); flex-wrap:wrap;">
+          <div class="form__group" style="flex:2; margin-bottom:0; min-width:200px;">
+            <input type="text" id="filter-title" class="form__input" placeholder="Buscar por título...">
+          </div>
+          <div class="form__group" style="flex:1; margin-bottom:0; min-width:150px;">
+            <select id="filter-status" class="form__input">
+              <option value="todos">Todos los estados</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="en-progreso">En Progreso</option>
+              <option value="completada">Completada</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <!-- Tabla Dinámica -->
       <div class="card">
         <div class="messages-container" id="tasks-table">

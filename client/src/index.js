@@ -16,5 +16,5 @@ export {
     showEmptyTasks,
 } from "./ui/index.js";
 
-export { searchUser, createTask, updateTask, deleteTask } from "./services/index.js";
+export { searchUser, createTask, updateTask, deleteTask, obtenerTareasFiltradas } from "./services/index.js";
 export * from "./utils/index.js";

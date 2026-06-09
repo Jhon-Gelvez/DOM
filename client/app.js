@@ -11,6 +11,8 @@ import {
     taskStatus,
     statusError,
     tasksTable,
+    filterTitle,
+    filterStatus,
     getCurrentUser,
     setCurrentUser,
     getEditingTaskId,
@@ -26,6 +28,7 @@ import {
     createTask,
     updateTask,
     deleteTask,
+    obtenerTareasFiltradas,
     isValidInput,
     getStatusLabel,
     setTextContent,
@@ -34,6 +37,18 @@ import {
 } from "./src/index.js";
 
 toggleTaskForm(true);
+
+let allTasks = [];
+
+const renderFilteredTasks = () => {
+    clearTasks();
+    const filtradas = obtenerTareasFiltradas(allTasks);
+    if (!filtradas.length) {
+        showEmptyTasks();
+        return;
+    }
+    filtradas.forEach(addTaskToTable);
+};
 
 // ============================================
 // EVENTO BUSCAR USUARIO
@@ -63,12 +78,8 @@ btnSearch.addEventListener("click", async () => {
         showMessage("Usuario encontrado correctamente");
         clearTasks();
 
-        if (!tasks.length) {
-            showEmptyTasks();
-            return;
-        }
-
-        tasks.forEach(addTaskToTable);
+        allTasks = tasks;
+        renderFilteredTasks();
     } catch (error) {
         toggleTaskForm(true);
         setInnerHtml(userInfoDisplay, `
@@ -117,17 +128,11 @@ taskForm.addEventListener("submit", async (event) => {
         if (editingId) {
             const taskEdit = await updateTask(editingId, { title, description, status });
 
-            const card = document.getElementById(taskEdit.id);
-            if (card) {
-                const statusText = getStatusLabel(taskEdit.status);
-
-                setTextContent(card.querySelector(".message-card__title"), taskEdit.title);
-                setTextContent(card.querySelector(".message-card__content"), taskEdit.description);
-
-                const badge = card.querySelector(".task-badge");
-                badge.className = `task-badge task-badge--${taskEdit.status}`;
-                setTextContent(badge, statusText);
+            const index = allTasks.findIndex(t => t.id == taskEdit.id);
+            if (index !== -1) {
+                allTasks[index] = taskEdit;
             }
+            renderFilteredTasks();
 
             setEditingTaskId(null);
             taskForm.reset();
@@ -141,7 +146,8 @@ taskForm.addEventListener("submit", async (event) => {
                 status,
             });
 
-            addTaskToTable(taskSaved);
+            allTasks.push(taskSaved);
+            renderFilteredTasks();
             taskForm.reset();
             showMessage("Tarea registrada correctamente");
         }
@@ -194,9 +200,17 @@ tasksTable.addEventListener("click", async (event) => {
 
     try {
         await deleteTask(taskId);
-        currentCard.remove();
+        allTasks = allTasks.filter(t => t.id != taskId);
+        renderFilteredTasks();
         showMessage("Tarea eliminada correctamente");
     } catch (error) {
         handleError(error);
     }
 });
+
+// ============================================
+// FILTROS EN TIEMPO REAL
+// ============================================
+
+filterTitle.addEventListener("input", renderFilteredTasks);
+filterStatus.addEventListener("change", renderFilteredTasks);

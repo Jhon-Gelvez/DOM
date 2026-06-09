@@ -15,6 +15,7 @@ export {
     setTextContent,
     setInnerHtml,
     showEmptyTasks,
+    handleExportTasks,
 } from "./ui/index.js";
 
 export { searchUser, createTask, updateTask, deleteTask } from "./services/index.js";

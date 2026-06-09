@@ -41,3 +41,4 @@ export const taskStatus = document.getElementById("task-status");
 export const statusError = document.getElementById("status-error");
 export const tasksTable = document.getElementById("tasks-table");
 export const taskCount = document.getElementById("task-count");
+export const btnExport = document.getElementById("btn-export");

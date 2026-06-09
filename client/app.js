@@ -11,6 +11,7 @@ import {
     taskStatus,
     statusError,
     tasksTable,
+    btnExport,
     getCurrentUser,
     setCurrentUser,
     getEditingTaskId,
@@ -22,6 +23,7 @@ import {
     showMessage,
     showErrorMessage,
     showEmptyTasks,
+    handleExportTasks,
     searchUser,
     createTask,
     updateTask,
@@ -200,3 +202,9 @@ tasksTable.addEventListener("click", async (event) => {
         handleError(error);
     }
 });
+
+// ============================================
+// EVENTO EXPORTAR TAREAS
+// ============================================
+
+btnExport.addEventListener("click", handleExportTasks);

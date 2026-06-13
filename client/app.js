@@ -72,10 +72,10 @@ btnSearch.addEventListener("click", async () => {
         }
 
         tasks.forEach(addTaskToTable);
-        tasksOrderBar();
         sortTasks(extractTasksFromDOM(), "date").forEach((task) => {
             tasksTable.appendChild(task.element);
         });
+        tasksOrderBar();
     } catch (error) {
         toggleTaskForm(true);
         setInnerHtml(

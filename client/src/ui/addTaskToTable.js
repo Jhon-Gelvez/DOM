@@ -23,6 +23,9 @@ export const addTaskToTable = (task) => {
     if (task.id) {
         taskCard.id = `${task.id}`;
     }
+    if (task.date) {
+        taskCard.dataset.date = task.date;
+    }
 
     const statusText = getStatusLabel(task.status);
 

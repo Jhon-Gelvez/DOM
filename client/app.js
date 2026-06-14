@@ -34,8 +34,10 @@ import {
     setTextContent,
     setInnerHtml,
     handleError,
+    tasksOrderBar,
+    sortTasks,
+    extractTasksFromDOM
 } from "./src/index.js";
-
 toggleTaskForm(true);
 
 let allTasks = [];
@@ -66,32 +68,28 @@ btnSearch.addEventListener("click", async () => {
     }
 
     try {
-        clearTasks();
-        setCurrentUser(null);
-        setInnerHtml(userInfoDisplay, "");
-
         const { user, tasks } = await searchUser(documentValue);
+        clearTasks();
         setCurrentUser(user);
-
         showUserInfo(user);
         toggleTaskForm(false);
         showMessage("Usuario encontrado correctamente");
-        clearTasks();
 
-        allTasks = tasks;
-        renderFilteredTasks();
+
     } catch (error) {
         toggleTaskForm(true);
-        setInnerHtml(userInfoDisplay, `
+        setInnerHtml(
+            userInfoDisplay,
+            `
             <div class="message-card__content">❌ Recurso no encontrado</div>
-        `);
+        `,
+        );
         showErrorMessage("Error en la peticion");
         console.error(error);
     }
 });
 
-// ============================================
-// EVENTO REGISTRAR / ACTUALIZAR TAREA
+// ============================================-
 // ============================================
 
 taskForm.addEventListener("submit", async (event) => {
@@ -126,7 +124,11 @@ taskForm.addEventListener("submit", async (event) => {
 
     try {
         if (editingId) {
-            const taskEdit = await updateTask(editingId, { title, description, status });
+            const taskEdit = await updateTask(editingId, {
+                title,
+                description,
+                status,
+            });
 
             const index = allTasks.findIndex(t => t.id == taskEdit.id);
             if (index !== -1) {
@@ -209,8 +211,28 @@ tasksTable.addEventListener("click", async (event) => {
 });
 
 // ============================================
+// ==========================================
 // FILTROS EN TIEMPO REAL
-// ============================================
+// ==========================================
 
 filterTitle.addEventListener("input", renderFilteredTasks);
 filterStatus.addEventListener("change", renderFilteredTasks);
+
+// EVENTO ORDENAR TAREAS
+// ==========================================
+
+document.addEventListener("change", (event) => {
+    const orderSelect = event.target.closest("#status-order");
+    if (!orderSelect) return;
+
+    const criteria = orderSelect.value || "date";
+
+    const tasks = extractTasksFromDOM();
+    if (!tasks.length) return;
+
+    const sorted = sortTasks(tasks, criteria);
+
+    sorted.forEach((task) => {
+        tasksTable.appendChild(task.element);
+    });
+});

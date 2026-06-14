@@ -2,6 +2,7 @@
 // BARREL FILE - EXPORTA TODOS LOS MÓDULOS
 // ============================================
 
+<<<<<<< HEAD
 export * from "./services/config.js";
 
 export {
@@ -18,3 +19,8 @@ export {
 
 export { searchUser, createTask, updateTask, deleteTask, obtenerTareasFiltradas } from "./services/index.js";
 export * from "./utils/index.js";
+=======
+export * from "./services/index.js"
+export * from "./ui/index.js";
+export * from "./utils/index.js";
+>>>>>>> develop

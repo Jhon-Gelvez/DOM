@@ -1,41 +1,40 @@
-import {
-    btnSearch,
-    userDocInput,
-    searchError,
-    userInfoDisplay,
-    taskForm,
-    taskTitle,
-    titleError,
-    taskDesc,
-    descError,
-    taskStatus,
-    statusError,
-    tasksTable,
-    getCurrentUser,
-    setCurrentUser,
-    getEditingTaskId,
-    setEditingTaskId,
-    toggleTaskForm,
-    clearTasks,
-    showUserInfo,
-    addTaskToTable,
-    showMessage,
-    showErrorMessage,
-    showEmptyTasks,
-    searchUser,
-    createTask,
-    updateTask,
-    deleteTask,
-    isValidInput,
-    getStatusLabel,
-    setTextContent,
-    setInnerHtml,
-    handleError,
-    tasksOrderBar,
-    sortTasks,
-    extractTasksFromDOM
+import { 
+  btnSearch,
+  userDocInput,
+  searchError,
+  userInfoDisplay,
+  taskForm,
+  taskTitle,
+  titleError,
+  taskDesc,
+  descError,
+  taskStatus,
+  statusError,
+  tasksTable,
+  getCurrentUser,
+  setCurrentUser,
+  getEditingTaskId,
+  setEditingTaskId,
+  toggleTaskForm,
+  clearTasks,
+  showUserInfo,
+  addTaskToTable,
+  showMessage,
+  showErrorMessage,
+  showEmptyTasks,
+  searchUser,
+  createTask,
+  updateTask,
+  deleteTask,
+  isValidInput,
+  getStatusLabel,
+  setTextContent,
+  setInnerHtml,
+  handleError,
+  tasksOrderBar,
+  sortTasks,
+  extractTasksFromDOM
 } from "./src/index.js";
-
 toggleTaskForm(true);
 
 // ============================================
@@ -54,17 +53,12 @@ btnSearch.addEventListener("click", async () => {
     }
 
     try {
-        clearTasks();
-        setCurrentUser(null);
-        setInnerHtml(userInfoDisplay, "");
-
         const { user, tasks } = await searchUser(documentValue);
+        clearTasks();
         setCurrentUser(user);
-
         showUserInfo(user);
         toggleTaskForm(false);
         showMessage("Usuario encontrado correctamente");
-        clearTasks();
 
         if (!tasks.length) {
             showEmptyTasks();
@@ -135,14 +129,8 @@ taskForm.addEventListener("submit", async (event) => {
             if (card) {
                 const statusText = getStatusLabel(taskEdit.status);
 
-                setTextContent(
-                    card.querySelector(".message-card__title"),
-                    taskEdit.title,
-                );
-                setTextContent(
-                    card.querySelector(".message-card__content"),
-                    taskEdit.description,
-                );
+                setTextContent(card.querySelector(".message-card__title"), taskEdit.title);
+                setTextContent(card.querySelector(".message-card__content"), taskEdit.description);
 
                 const badge = card.querySelector(".task-badge");
                 badge.className = `task-badge task-badge--${taskEdit.status}`;
@@ -151,10 +139,7 @@ taskForm.addEventListener("submit", async (event) => {
 
             setEditingTaskId(null);
             taskForm.reset();
-            setTextContent(
-                taskForm.querySelector('button[type="submit"]'),
-                "Guardar Tarea",
-            );
+            setTextContent(taskForm.querySelector('button[type="submit"]'), "Guardar Tarea");
             showMessage("Tarea actualizada correctamente");
         } else {
             const taskSaved = await createTask({
@@ -187,14 +172,8 @@ tasksTable.addEventListener("click", (event) => {
     const currentCard = btnUpdate.closest(".message-card");
     if (!currentCard) return;
 
-    const currentTitleText = setTextContent(
-        currentCard.querySelector(".message-card__title"),
-    )
-        .replace("Tarea: ", "")
-        .trim();
-    const currentDescText = setTextContent(
-        currentCard.querySelector(".message-card__content"),
-    ).trim();
+    const currentTitleText = setTextContent(currentCard.querySelector(".message-card__title")).replace("Tarea: ", "").trim();
+    const currentDescText = setTextContent(currentCard.querySelector(".message-card__content")).trim();
 
     taskTitle.value = currentTitleText;
     taskDesc.value = currentDescText;

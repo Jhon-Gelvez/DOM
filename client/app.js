@@ -1,38 +1,40 @@
-import {
-    btnSearch,
-    userDocInput,
-    searchError,
-    userInfoDisplay,
-    taskForm,
-    taskTitle,
-    titleError,
-    taskDesc,
-    descError,
-    taskStatus,
-    statusError,
-    tasksTable,
-    getCurrentUser,
-    setCurrentUser,
-    getEditingTaskId,
-    setEditingTaskId,
-    toggleTaskForm,
-    clearTasks,
-    showUserInfo,
-    addTaskToTable,
-    showMessage,
-    showErrorMessage,
-    showEmptyTasks,
-    searchUser,
-    createTask,
-    updateTask,
-    deleteTask,
-    isValidInput,
-    getStatusLabel,
-    setTextContent,
-    setInnerHtml,
-    handleError,
+import { 
+  btnSearch,
+  userDocInput,
+  searchError,
+  userInfoDisplay,
+  taskForm,
+  taskTitle,
+  titleError,
+  taskDesc,
+  descError,
+  taskStatus,
+  statusError,
+  tasksTable,
+  getCurrentUser,
+  setCurrentUser,
+  getEditingTaskId,
+  setEditingTaskId,
+  toggleTaskForm,
+  clearTasks,
+  showUserInfo,
+  addTaskToTable,
+  showMessage,
+  showErrorMessage,
+  showEmptyTasks,
+  searchUser,
+  createTask,
+  updateTask,
+  deleteTask,
+  isValidInput,
+  getStatusLabel,
+  setTextContent,
+  setInnerHtml,
+  handleError,
+  tasksOrderBar,
+  sortTasks,
+  extractTasksFromDOM
 } from "./src/index.js";
-
 toggleTaskForm(true);
 
 // ============================================
@@ -51,17 +53,12 @@ btnSearch.addEventListener("click", async () => {
     }
 
     try {
-        clearTasks();
-        setCurrentUser(null);
-        setInnerHtml(userInfoDisplay, "");
-
         const { user, tasks } = await searchUser(documentValue);
+        clearTasks();
         setCurrentUser(user);
-
         showUserInfo(user);
         toggleTaskForm(false);
         showMessage("Usuario encontrado correctamente");
-        clearTasks();
 
         if (!tasks.length) {
             showEmptyTasks();
@@ -69,11 +66,18 @@ btnSearch.addEventListener("click", async () => {
         }
 
         tasks.forEach(addTaskToTable);
+        sortTasks(extractTasksFromDOM(), "date").forEach((task) => {
+            tasksTable.appendChild(task.element);
+        });
+        tasksOrderBar();
     } catch (error) {
         toggleTaskForm(true);
-        setInnerHtml(userInfoDisplay, `
+        setInnerHtml(
+            userInfoDisplay,
+            `
             <div class="message-card__content">❌ Recurso no encontrado</div>
-        `);
+        `,
+        );
         showErrorMessage("Error en la peticion");
         console.error(error);
     }
@@ -115,7 +119,11 @@ taskForm.addEventListener("submit", async (event) => {
 
     try {
         if (editingId) {
-            const taskEdit = await updateTask(editingId, { title, description, status });
+            const taskEdit = await updateTask(editingId, {
+                title,
+                description,
+                status,
+            });
 
             const card = document.getElementById(taskEdit.id);
             if (card) {
@@ -199,4 +207,24 @@ tasksTable.addEventListener("click", async (event) => {
     } catch (error) {
         handleError(error);
     }
+});
+
+// ============================================
+// EVENTO ORDENAR TAREAS
+// ============================================
+
+document.addEventListener("change", (event) => {
+    const orderSelect = event.target.closest("#status-order");
+    if (!orderSelect) return;
+
+    const criteria = orderSelect.value || "date";
+
+    const tasks = extractTasksFromDOM();
+    if (!tasks.length) return;
+
+    const sorted = sortTasks(tasks, criteria);
+
+    sorted.forEach((task) => {
+        tasksTable.appendChild(task.element);
+    });
 });

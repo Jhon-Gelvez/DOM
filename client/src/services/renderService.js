@@ -1,4 +1,4 @@
-import { clearTasks, showEmptyTasks, addTaskToTable } from "./index.js";
+import { clearTasks, showEmptyTasks, addTaskToTable } from "../ui/index.js";
 import { filterTasksList } from "./filterService.js";
 
 export const renderFilteredTasks = (tasksToRender) => {

@@ -38,6 +38,7 @@ import {
     sortTasks,
     extractTasksFromDOM
 } from "./src/index.js";
+
 toggleTaskForm(true);
 
 let allTasks = [];
@@ -55,7 +56,6 @@ const renderFilteredTasks = () => {
 // ============================================
 // EVENTO BUSCAR USUARIO
 // ============================================
-
 btnSearch.addEventListener("click", async () => {
     const documentValue = userDocInput.value.trim();
 
@@ -75,6 +75,9 @@ btnSearch.addEventListener("click", async () => {
         toggleTaskForm(false);
         showMessage("Usuario encontrado correctamente");
 
+        // Guardamos las tareas en el estado global y las renderizamos con el filtro
+        allTasks = tasks;
+        renderFilteredTasks();
 
     } catch (error) {
         toggleTaskForm(true);
@@ -82,16 +85,16 @@ btnSearch.addEventListener("click", async () => {
             userInfoDisplay,
             `
             <div class="message-card__content">❌ Recurso no encontrado</div>
-        `,
+            `,
         );
         showErrorMessage("Error en la peticion");
         console.error(error);
     }
 });
 
-// ============================================-
 // ============================================
-
+// EVENTO CREAR O ACTUALIZAR TAREA
+// ============================================
 taskForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -159,9 +162,8 @@ taskForm.addEventListener("submit", async (event) => {
 });
 
 // ============================================
-// EVENTO EDITAR TAREA
+// EVENTO EDITAR TAREA (Cargar datos al formulario)
 // ============================================
-
 tasksTable.addEventListener("click", (event) => {
     const btnUpdate = event.target.closest(".btnUpdate");
     if (!btnUpdate) return;
@@ -191,14 +193,12 @@ tasksTable.addEventListener("click", (event) => {
 // ============================================
 // EVENTO ELIMINAR TAREA
 // ============================================
-
 tasksTable.addEventListener("click", async (event) => {
     const btnDelete = event.target.closest(".btnDelete");
     if (!btnDelete) return;
 
     event.preventDefault();
     const taskId = btnDelete.getAttribute("data-id");
-    const currentCard = btnDelete.closest(".message-card");
 
     try {
         await deleteTask(taskId);
@@ -210,17 +210,15 @@ tasksTable.addEventListener("click", async (event) => {
     }
 });
 
-// ============================================
 // ==========================================
 // FILTROS EN TIEMPO REAL
 // ==========================================
-
 filterTitle.addEventListener("input", renderFilteredTasks);
 filterStatus.addEventListener("change", renderFilteredTasks);
 
+// ==========================================
 // EVENTO ORDENAR TAREAS
 // ==========================================
-
 document.addEventListener("change", (event) => {
     const orderSelect = event.target.closest("#status-order");
     if (!orderSelect) return;

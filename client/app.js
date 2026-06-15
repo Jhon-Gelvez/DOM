@@ -38,20 +38,11 @@ import {
     sortTasks,
     extractTasksFromDOM
 } from "./src/index.js";
+import { renderFilteredTasks } from "./src/services/renderService.js";
 
 toggleTaskForm(true);
 
 let allTasks = [];
-
-const renderFilteredTasks = () => {
-    clearTasks();
-    const filtradas = filterTasksList(allTasks);
-    if (!filtradas.length) {
-        showEmptyTasks();
-        return;
-    }
-    filtradas.forEach(addTaskToTable);
-};
 
 // ============================================
 // EVENTO BUSCAR USUARIO
@@ -75,9 +66,8 @@ btnSearch.addEventListener("click", async () => {
         toggleTaskForm(false);
         showMessage("Usuario encontrado correctamente");
 
-        // Guardamos las tareas en el estado global y las renderizamos con el filtro
         allTasks = tasks;
-        renderFilteredTasks();
+        renderFilteredTasks(allTasks);
 
     } catch (error) {
         toggleTaskForm(true);
@@ -137,7 +127,7 @@ taskForm.addEventListener("submit", async (event) => {
             if (index !== -1) {
                 allTasks[index] = taskEdit;
             }
-            renderFilteredTasks();
+            renderFilteredTasks(allTasks);
 
             setEditingTaskId(null);
             taskForm.reset();
@@ -152,7 +142,7 @@ taskForm.addEventListener("submit", async (event) => {
             });
 
             allTasks.push(taskSaved);
-            renderFilteredTasks();
+            renderFilteredTasks(allTasks);
             taskForm.reset();
             showMessage("Tarea registrada correctamente");
         }
@@ -162,7 +152,7 @@ taskForm.addEventListener("submit", async (event) => {
 });
 
 // ============================================
-// EVENTO EDITAR TAREA (Cargar datos al formulario)
+// EVENTO EDITAR TAREA
 // ============================================
 tasksTable.addEventListener("click", (event) => {
     const btnUpdate = event.target.closest(".btnUpdate");
@@ -203,7 +193,7 @@ tasksTable.addEventListener("click", async (event) => {
     try {
         await deleteTask(taskId);
         allTasks = allTasks.filter(t => t.id != taskId);
-        renderFilteredTasks();
+        renderFilteredTasks(allTasks);
         showMessage("Tarea eliminada correctamente");
     } catch (error) {
         handleError(error);
@@ -213,8 +203,8 @@ tasksTable.addEventListener("click", async (event) => {
 // ==========================================
 // FILTROS EN TIEMPO REAL
 // ==========================================
-filterTitle.addEventListener("input", renderFilteredTasks);
-filterStatus.addEventListener("change", renderFilteredTasks);
+filterTitle.addEventListener("input", () => renderFilteredTasks(allTasks));
+filterStatus.addEventListener("change", () => renderFilteredTasks(allTasks));
 
 // ==========================================
 // EVENTO ORDENAR TAREAS

@@ -28,7 +28,7 @@ import {
     createTask,
     updateTask,
     deleteTask,
-    obtenerTareasFiltradas,
+    filterTasksList,
     isValidInput,
     getStatusLabel,
     setTextContent,
@@ -41,10 +41,21 @@ import {
 
 toggleTaskForm(true);
 
+let allTasks = [];
+
+const renderFilteredTasks = () => {
+    clearTasks();
+    const filtradas = filterTasksList(allTasks);
+    if (!filtradas.length) {
+        showEmptyTasks();
+        return;
+    }
+    filtradas.forEach(addTaskToTable);
+};
+
 // ============================================
 // EVENTO BUSCAR USUARIO
 // ============================================
-
 btnSearch.addEventListener("click", async () => {
     const documentValue = userDocInput.value.trim();
 
@@ -64,23 +75,17 @@ btnSearch.addEventListener("click", async () => {
         toggleTaskForm(false);
         showMessage("Usuario encontrado correctamente");
 
-        if (!tasks.length) {
-            showEmptyTasks();
-            return;
-        }
+        // Guardamos las tareas en el estado global y las renderizamos con el filtro
+        allTasks = tasks;
+        renderFilteredTasks();
 
-        tasks.forEach(addTaskToTable);
-        sortTasks(extractTasksFromDOM(), "date").forEach((task) => {
-            tasksTable.appendChild(task.element);
-        });
-        tasksOrderBar();
     } catch (error) {
         toggleTaskForm(true);
         setInnerHtml(
             userInfoDisplay,
             `
             <div class="message-card__content">❌ Recurso no encontrado</div>
-        `,
+            `,
         );
         showErrorMessage("Error en la peticion");
         console.error(error);
@@ -88,9 +93,8 @@ btnSearch.addEventListener("click", async () => {
 });
 
 // ============================================
-// EVENTO REGISTRAR / ACTUALIZAR TAREA
+// EVENTO CREAR O ACTUALIZAR TAREA
 // ============================================
-
 taskForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -129,17 +133,11 @@ taskForm.addEventListener("submit", async (event) => {
                 status,
             });
 
-            const card = document.getElementById(taskEdit.id);
-            if (card) {
-                const statusText = getStatusLabel(taskEdit.status);
-
-                setTextContent(card.querySelector(".message-card__title"), taskEdit.title);
-                setTextContent(card.querySelector(".message-card__content"), taskEdit.description);
-
-                const badge = card.querySelector(".task-badge");
-                badge.className = `task-badge task-badge--${taskEdit.status}`;
-                setTextContent(badge, statusText);
+            const index = allTasks.findIndex(t => t.id == taskEdit.id);
+            if (index !== -1) {
+                allTasks[index] = taskEdit;
             }
+            renderFilteredTasks();
 
             setEditingTaskId(null);
             taskForm.reset();
@@ -153,7 +151,8 @@ taskForm.addEventListener("submit", async (event) => {
                 status,
             });
 
-            addTaskToTable(taskSaved);
+            allTasks.push(taskSaved);
+            renderFilteredTasks();
             taskForm.reset();
             showMessage("Tarea registrada correctamente");
         }
@@ -163,9 +162,8 @@ taskForm.addEventListener("submit", async (event) => {
 });
 
 // ============================================
-// EVENTO EDITAR TAREA
+// EVENTO EDITAR TAREA (Cargar datos al formulario)
 // ============================================
-
 tasksTable.addEventListener("click", (event) => {
     const btnUpdate = event.target.closest(".btnUpdate");
     if (!btnUpdate) return;
@@ -195,28 +193,32 @@ tasksTable.addEventListener("click", (event) => {
 // ============================================
 // EVENTO ELIMINAR TAREA
 // ============================================
-
 tasksTable.addEventListener("click", async (event) => {
     const btnDelete = event.target.closest(".btnDelete");
     if (!btnDelete) return;
 
     event.preventDefault();
     const taskId = btnDelete.getAttribute("data-id");
-    const currentCard = btnDelete.closest(".message-card");
 
     try {
         await deleteTask(taskId);
-        currentCard.remove();
+        allTasks = allTasks.filter(t => t.id != taskId);
+        renderFilteredTasks();
         showMessage("Tarea eliminada correctamente");
     } catch (error) {
         handleError(error);
     }
 });
 
-// ============================================
-// EVENTO ORDENAR TAREAS
-// ============================================
+// ==========================================
+// FILTROS EN TIEMPO REAL
+// ==========================================
+filterTitle.addEventListener("input", renderFilteredTasks);
+filterStatus.addEventListener("change", renderFilteredTasks);
 
+// ==========================================
+// EVENTO ORDENAR TAREAS
+// ==========================================
 document.addEventListener("change", (event) => {
     const orderSelect = event.target.closest("#status-order");
     if (!orderSelect) return;

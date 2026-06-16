@@ -29,6 +29,7 @@ import {
     updateTask,
     deleteTask,
     filterTasksList,
+    renderFilteredTasks,
     isValidInput,
     getStatusLabel,
     setTextContent,
@@ -38,8 +39,6 @@ import {
     sortTasks,
     extractTasksFromDOM
 } from "./src/index.js";
-import { renderFilteredTasks } from "./src/services/renderService.js";
-
 toggleTaskForm(true);
 
 let allTasks = [];

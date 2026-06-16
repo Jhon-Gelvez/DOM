@@ -12,6 +12,8 @@ import {
     statusError,
     tasksTable,
     btnExport,
+    filterTitle,
+    filterStatus,
     getCurrentUser,
     setCurrentUser,
     getEditingTaskId,
@@ -28,19 +30,24 @@ import {
     createTask,
     updateTask,
     deleteTask,
+    filterTasksList,
+    renderFilteredTasks,
     isValidInput,
     getStatusLabel,
     setTextContent,
     setInnerHtml,
     handleError,
+    tasksOrderBar,
+    sortTasks,
+    extractTasksFromDOM
 } from "./src/index.js";
-
 toggleTaskForm(true);
+
+let allTasks = [];
 
 // ============================================
 // EVENTO BUSCAR USUARIO
 // ============================================
-
 btnSearch.addEventListener("click", async () => {
     const documentValue = userDocInput.value.trim();
 
@@ -53,38 +60,37 @@ btnSearch.addEventListener("click", async () => {
     }
 
     try {
-        clearTasks();
-        setCurrentUser(null);
-        setInnerHtml(userInfoDisplay, "");
-
         const { user, tasks } = await searchUser(documentValue);
+        clearTasks();
         setCurrentUser(user);
-
         showUserInfo(user);
         toggleTaskForm(false);
         showMessage("Usuario encontrado correctamente");
-        clearTasks();
 
-        if (!tasks.length) {
+        allTasks = tasks;
+        if (allTasks.length > 0) {
+            renderFilteredTasks(allTasks);
+        } else {
+            clearTasks();
             showEmptyTasks();
-            return;
         }
 
-        tasks.forEach(addTaskToTable);
     } catch (error) {
         toggleTaskForm(true);
-        setInnerHtml(userInfoDisplay, `
-            <div class="message-card__content">❌ ${error.message}</div>
-        `);
-        showErrorMessage(error.message);
+        setInnerHtml(
+            userInfoDisplay,
+            `
+            <div class="message-card__content">❌ Recurso no encontrado</div>
+            `,
+        );
+        showErrorMessage("Error en la peticion");
         console.error(error);
     }
 });
 
 // ============================================
-// EVENTO REGISTRAR / ACTUALIZAR TAREA
+// EVENTO CREAR O ACTUALIZAR TAREA
 // ============================================
-
 taskForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -117,19 +123,17 @@ taskForm.addEventListener("submit", async (event) => {
 
     try {
         if (editingId) {
-            const taskEdit = await updateTask(editingId, { title, description, status });
+            const taskEdit = await updateTask(editingId, {
+                title,
+                description,
+                status,
+            });
 
-            const card = document.getElementById(taskEdit.id);
-            if (card) {
-                const statusText = getStatusLabel(taskEdit.status);
-
-                setTextContent(card.querySelector(".message-card__title"), taskEdit.title);
-                setTextContent(card.querySelector(".message-card__content"), taskEdit.description);
-
-                const badge = card.querySelector(".task-badge");
-                badge.className = `task-badge task-badge--${taskEdit.status}`;
-                setTextContent(badge, statusText);
+            const index = allTasks.findIndex(t => t.id == taskEdit.id);
+            if (index !== -1) {
+                allTasks[index] = taskEdit;
             }
+            renderFilteredTasks(allTasks);
 
             setEditingTaskId(null);
             taskForm.reset();
@@ -143,7 +147,8 @@ taskForm.addEventListener("submit", async (event) => {
                 status,
             });
 
-            addTaskToTable(taskSaved);
+            allTasks.push(taskSaved);
+            renderFilteredTasks(allTasks);
             taskForm.reset();
             showMessage("Tarea registrada correctamente");
         }
@@ -155,7 +160,6 @@ taskForm.addEventListener("submit", async (event) => {
 // ============================================
 // EVENTO EDITAR TAREA
 // ============================================
-
 tasksTable.addEventListener("click", (event) => {
     const btnUpdate = event.target.closest(".btnUpdate");
     if (!btnUpdate) return;
@@ -185,26 +189,44 @@ tasksTable.addEventListener("click", (event) => {
 // ============================================
 // EVENTO ELIMINAR TAREA
 // ============================================
-
 tasksTable.addEventListener("click", async (event) => {
     const btnDelete = event.target.closest(".btnDelete");
     if (!btnDelete) return;
 
     event.preventDefault();
     const taskId = btnDelete.getAttribute("data-id");
-    const currentCard = btnDelete.closest(".message-card");
 
     try {
         await deleteTask(taskId);
-        currentCard.remove();
+        allTasks = allTasks.filter(t => t.id != taskId);
+        renderFilteredTasks(allTasks);
         showMessage("Tarea eliminada correctamente");
     } catch (error) {
         showErrorMessage(error.message);
     }
 });
 
-// ============================================
-// EVENTO EXPORTAR TAREAS
-// ============================================
+// ==========================================
+// FILTROS EN TIEMPO REAL
+// ==========================================
+filterTitle.addEventListener("input", () => renderFilteredTasks(allTasks));
+filterStatus.addEventListener("change", () => renderFilteredTasks(allTasks));
 
-btnExport.addEventListener("click", handleExportTasks);
+// ==========================================
+// EVENTO ORDENAR TAREAS
+// ==========================================
+document.addEventListener("change", (event) => {
+    const orderSelect = event.target.closest("#status-order");
+    if (!orderSelect) return;
+
+    const criteria = orderSelect.value || "date";
+
+    const tasks = extractTasksFromDOM();
+    if (!tasks.length) return;
+
+    const sorted = sortTasks(tasks, criteria);
+
+    sorted.forEach((task) => {
+        tasksTable.appendChild(task.element);
+    });
+});

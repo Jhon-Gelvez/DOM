@@ -13,6 +13,7 @@ import {
     tasksTable,
     filterTitle,
     filterStatus,
+    btnExport,
     getCurrentUser,
     setCurrentUser,
     getEditingTaskId,
@@ -24,6 +25,7 @@ import {
     showMessage,
     showErrorMessage,
     showEmptyTasks,
+    handleExportTasks,
     searchUser,
     createTask,
     updateTask,
@@ -75,13 +77,10 @@ btnSearch.addEventListener("click", async () => {
 
     } catch (error) {
         toggleTaskForm(true);
-        setInnerHtml(
-            userInfoDisplay,
-            `
-            <div class="message-card__content">❌ Recurso no encontrado</div>
-            `,
-        );
-        showErrorMessage("Error en la peticion");
+        setInnerHtml(userInfoDisplay, `
+            <div class="message-card__content">❌ ${error.message}</div>
+        `);
+        showErrorMessage(error.message);
         console.error(error);
     }
 });
@@ -151,7 +150,7 @@ taskForm.addEventListener("submit", async (event) => {
             showMessage("Tarea registrada correctamente");
         }
     } catch (error) {
-        handleError(error);
+        showErrorMessage(error.message);
     }
 });
 
@@ -200,7 +199,7 @@ tasksTable.addEventListener("click", async (event) => {
         renderFilteredTasks(allTasks);
         showMessage("Tarea eliminada correctamente");
     } catch (error) {
-        handleError(error);
+        showErrorMessage(error.message);
     }
 });
 
@@ -228,3 +227,8 @@ document.addEventListener("change", (event) => {
         tasksTable.appendChild(task.element);
     });
 });
+
+// ============================================
+// EVENTO EXPORTAR TAREAS
+// ============================================
+btnExport.addEventListener("click", handleExportTasks);

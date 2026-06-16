@@ -43,3 +43,4 @@ export const tasksTable = document.getElementById("tasks-table");
 export const taskCount = document.getElementById("task-count");
 export const filterTitle = document.getElementById("filter-title");
 export const filterStatus = document.getElementById("filter-status");
+export const btnExport = document.getElementById("btn-export");

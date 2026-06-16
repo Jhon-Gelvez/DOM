@@ -8,3 +8,4 @@ export { showMessage, showErrorMessage, showInfoMessage } from "./notifications.
 export { showEmptyTasks } from "./showEmptyTasks.js";
 export { setInnerHtml } from "./setInnerHtml.js";
 export { setTextContent } from "./setTextContent.js";
+export { handleExportTasks } from "./exportTasksUI.js";

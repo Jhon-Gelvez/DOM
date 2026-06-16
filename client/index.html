@@ -58,7 +58,10 @@
         <section class="messages-section">
             <div class="messages-header">
                 <h2 class="messages-header__title">Información del Usuario</h2>
-                <span class="messages-header__count" id="task-count">0 Tareas</span>
+                <div class="messages-header__actions">
+                    <span class="messages-header__count" id="task-count">0 Tareas</span>
+                    <button type="button" class="btn btn--primary btn--sm" id="btn-export">📥 Exportar JSON</button>
+                </div>
             </div>
 
             <div id="user-info-display" class="message-card">

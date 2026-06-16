@@ -67,7 +67,12 @@ btnSearch.addEventListener("click", async () => {
         showMessage("Usuario encontrado correctamente");
 
         allTasks = tasks;
-        renderFilteredTasks(allTasks);
+        if (allTasks.length > 0) {
+            renderFilteredTasks(allTasks);
+        } else {
+            clearTasks();
+            showEmptyTasks();
+        }
 
     } catch (error) {
         toggleTaskForm(true);

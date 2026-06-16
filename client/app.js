@@ -39,7 +39,7 @@ import {
     handleError,
     tasksOrderBar,
     sortTasks,
-    extractTasksFromDOM
+    extractTasksFromDOM,
 } from "./src/index.js";
 toggleTaskForm(true);
 
@@ -60,8 +60,8 @@ btnSearch.addEventListener("click", async () => {
     }
 
     try {
-        const { user, tasks } = await searchUser(documentValue);
         clearTasks();
+        const { user, tasks } = await searchUser(documentValue);
         setCurrentUser(user);
         showUserInfo(user);
         toggleTaskForm(false);
@@ -74,13 +74,17 @@ btnSearch.addEventListener("click", async () => {
             clearTasks();
             showEmptyTasks();
         }
-
     } catch (error) {
         toggleTaskForm(true);
-        setInnerHtml(userInfoDisplay, `
+        setInnerHtml(
+            userInfoDisplay,
+            `
             <div class="message-card__content">❌ ${error.message}</div>
-        `);
+        `,
+        );
         showErrorMessage(error.message);
+        clearTasks();
+        showEmptyTasks();
         console.error(error);
     }
 });
@@ -126,7 +130,7 @@ taskForm.addEventListener("submit", async (event) => {
                 status,
             });
 
-            const index = allTasks.findIndex(t => t.id == taskEdit.id);
+            const index = allTasks.findIndex((t) => t.id == taskEdit.id);
             if (index !== -1) {
                 allTasks[index] = taskEdit;
             }
@@ -134,7 +138,10 @@ taskForm.addEventListener("submit", async (event) => {
 
             setEditingTaskId(null);
             taskForm.reset();
-            setTextContent(taskForm.querySelector('button[type="submit"]'), "Guardar Tarea");
+            setTextContent(
+                taskForm.querySelector('button[type="submit"]'),
+                "Guardar Tarea",
+            );
             showMessage("Tarea actualizada correctamente");
         } else {
             const taskSaved = await createTask({
@@ -167,8 +174,14 @@ tasksTable.addEventListener("click", (event) => {
     const currentCard = btnUpdate.closest(".message-card");
     if (!currentCard) return;
 
-    const currentTitleText = setTextContent(currentCard.querySelector(".message-card__title")).replace("Tarea: ", "").trim();
-    const currentDescText = setTextContent(currentCard.querySelector(".message-card__content")).trim();
+    const currentTitleText = setTextContent(
+        currentCard.querySelector(".message-card__title"),
+    )
+        .replace("Tarea: ", "")
+        .trim();
+    const currentDescText = setTextContent(
+        currentCard.querySelector(".message-card__content"),
+    ).trim();
 
     taskTitle.value = currentTitleText;
     taskDesc.value = currentDescText;
@@ -195,7 +208,7 @@ tasksTable.addEventListener("click", async (event) => {
 
     try {
         await deleteTask(taskId);
-        allTasks = allTasks.filter(t => t.id != taskId);
+        allTasks = allTasks.filter((t) => t.id != taskId);
         renderFilteredTasks(allTasks);
         showMessage("Tarea eliminada correctamente");
     } catch (error) {

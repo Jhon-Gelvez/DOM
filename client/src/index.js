@@ -1,22 +1,8 @@
-// ============================================
-// BARREL FILE - EXPORTA TODOS LOS MÓDULOS
-// ============================================
+// // =======================================================
+// // BARREL FILE - EXPORTA TODOS LOS MÓDULOS
+// // =======================================================
 
 export * from "./services/config.js";
-
-export {
-    toggleTaskForm,
-    clearTasks,
-    showUserInfo,
-    addTaskToTable,
-    showMessage,
-    showErrorMessage,
-    showInfoMessage,
-    setTextContent,
-    setInnerHtml,
-    showEmptyTasks,
-    handleExportTasks,
-} from "./ui/index.js";
-
-export { searchUser, createTask, updateTask, deleteTask } from "./services/index.js";
+export * from "./services/index.js";
+export * from "./ui/index.js";
 export * from "./utils/index.js";

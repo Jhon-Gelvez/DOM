@@ -1,5 +1,5 @@
 export const apiUrl = "http://localhost:3044/users";
-export const apiTasks = "http://localhost:3044/tasks"
+export const apiTasks = "http://localhost:3044/tasks";
 
 let currentUser = null;
 let totalTasks = 0;
@@ -41,4 +41,6 @@ export const taskStatus = document.getElementById("task-status");
 export const statusError = document.getElementById("status-error");
 export const tasksTable = document.getElementById("tasks-table");
 export const taskCount = document.getElementById("task-count");
+export const filterTitle = document.getElementById("filter-title");
+export const filterStatus = document.getElementById("filter-status");
 export const btnExport = document.getElementById("btn-export");

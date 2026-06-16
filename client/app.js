@@ -74,9 +74,9 @@ btnSearch.addEventListener("click", async () => {
     } catch (error) {
         toggleTaskForm(true);
         setInnerHtml(userInfoDisplay, `
-            <div class="message-card__content">❌ Recurso no encontrado</div>
+            <div class="message-card__content">❌ ${error.message}</div>
         `);
-        showErrorMessage("Error en la peticion");
+        showErrorMessage(error.message);
         console.error(error);
     }
 });
@@ -148,7 +148,7 @@ taskForm.addEventListener("submit", async (event) => {
             showMessage("Tarea registrada correctamente");
         }
     } catch (error) {
-        handleError(error);
+        showErrorMessage(error.message);
     }
 });
 
@@ -199,7 +199,7 @@ tasksTable.addEventListener("click", async (event) => {
         currentCard.remove();
         showMessage("Tarea eliminada correctamente");
     } catch (error) {
-        handleError(error);
+        showErrorMessage(error.message);
     }
 });
 

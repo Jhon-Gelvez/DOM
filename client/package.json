@@ -8,7 +8,6 @@
     },
     "scripts": {
         "start": "serve client -l tcp://10.5.225.34:3001",
-        "api": "json-server --watch ../server/db.json -p 3044 --host 10.5.225.34",
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview"
